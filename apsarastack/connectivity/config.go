@@ -46,6 +46,7 @@ type Config struct {
 	RamEndpoint              string
 	Insecure                 bool
 	Proxy                    string
+	EssEndpoint              string
 }
 
 func (c *Config) loadAndValidate() error {
