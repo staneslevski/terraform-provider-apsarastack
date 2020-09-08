@@ -19,6 +19,7 @@ const (
 	RAMCode        = ServiceCode("RAM")
 	CDNCode        = ServiceCode("CDN")
 	SLBCode        = ServiceCode("SLB")
+	OSSCode        = ServiceCode("OSS")
 	LOCATIONCode   = ServiceCode("LOCATION")
 	CONTAINCode    = ServiceCode("CS")
 )

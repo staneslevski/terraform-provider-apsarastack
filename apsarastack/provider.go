@@ -172,6 +172,9 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_forward_entry":                       resourceApsaraStackForwardEntry(),
 			"apsarastack_nat_gateway":                         resourceApsaraStackNatGateway(),
 			"apsarastack_snat_entry":                          resourceApsaraStackSnatEntry(),
+			"apsarastack_image_copy":                          resourceApsaraStackImageCopy(),
+			"apsarastack_image_export":                        resourceApsaraStackImageExport(),
+			"apsarastack_image_import":                        resourceApsaraStackImageImport(),
 		},
 
 		ConfigureFunc: providerConfigure,
