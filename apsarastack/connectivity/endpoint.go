@@ -21,6 +21,7 @@ const (
 	SLBCode        = ServiceCode("SLB")
 	LOCATIONCode   = ServiceCode("LOCATION")
 	CONTAINCode    = ServiceCode("CS")
+	OSSCode        = ServiceCode("OSS")
 )
 
 type Endpoints struct {
