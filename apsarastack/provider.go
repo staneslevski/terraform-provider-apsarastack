@@ -140,9 +140,9 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_snat_entries":                   dataSourceApsaraStackSnatEntries(),
 			"apsarastack_db_instances":                   dataSourceApsaraStackDBInstances(),
 			"apsarastack_db_zones":                       dataSourceApsaraStackDBZones(),
-			"apsarastack_zones":                          dataSourceApsaraStackZones(),
-			"apsarastack_ess_lifecycle_hooks":            dataSourceApsaraStackEssLifecycleHooks(),
-			"apsarastack_ess_notifications":              dataSourceApsaraStackEssNotifications(),
+			"apsarastack_slb_server_certificates":        dataSourceApsaraStackSlbServerCertificates(),
+			"apsarastack_slb_backend_servers":            dataSourceApsaraStackSlbBackendServers(),
+		
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"apsarastack_disk":                                resourceApsaraStackDisk(),
@@ -181,9 +181,9 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_nat_gateway":                         resourceApsaraStackNatGateway(),
 			"apsarastack_snat_entry":                          resourceApsaraStackSnatEntry(),
 			"apsarastack_db_instance":                         resourceApsaraStackDBInstance(),
-			"apsarastack_db_readonly_instance":                resourceApsaraStackDBReadonlyInstance(),
-			"apsarastack_ess_lifecycle_hook":                  resourceApsaraStackEssLifecycleHook(),
-			"apsarastack_ess_notification":                    resourceApsaraStackEssNotification(),
+			"apsarastack_db_readonly_instance":                resourceApsaraStackDBReadonlyInstance(),			
+			"apsarastack_slb_server_certificate":              resourceApsaraStackSlbServerCertificate(),
+			"apsarastack_slb_backend_server":                  resourceApsaraStackSlbBackendServer(),			
 		},
 
 		ConfigureFunc: providerConfigure,
