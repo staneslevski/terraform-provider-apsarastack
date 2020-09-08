@@ -21,7 +21,7 @@ data "apsarastack_ess_scaling_rules" "scalingrules_ds" {
 }
 
 output "first_scaling_rule" {
-  value = "${data.alicloud_ess_scaling_rules.scalingrules_ds.rules.0.id}"
+  value = "${data.apsarastack_ess_scaling_rules.scalingrules_ds.rules.0.id}"
 }
 ```
 
