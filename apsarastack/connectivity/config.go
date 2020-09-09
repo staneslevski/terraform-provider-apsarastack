@@ -47,6 +47,7 @@ type Config struct {
 	Insecure                 bool
 	Proxy                    string
 	OssEndpoint              string
+	EssEndpoint              string
 }
 
 func (c *Config) loadAndValidate() error {

@@ -5,6 +5,7 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/endpoints"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	cdn_new "github.com/aliyun/alibaba-cloud-sdk-go/services/cdn"
+	"github.com/aliyun/alibaba-cloud-sdk-go/services/ess"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/location"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/slb"
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
@@ -47,6 +48,7 @@ type ApsaraStackClient struct {
 	kmsconn        *kms.Client
 	bssopenapiconn *bssopenapi.Client
 	ramconn        *ram.Client
+	essconn        *ess.Client
 }
 
 const (
@@ -119,6 +121,30 @@ func (client *ApsaraStackClient) WithEcsClient(do func(*ecs.Client) (interface{}
 	}
 
 	return do(client.ecsconn)
+}
+
+func (client *ApsaraStackClient) WithEssClient(do func(*ess.Client) (interface{}, error)) (interface{}, error) {
+	// Initialize the ESS client if necessary
+	if client.essconn == nil {
+		endpoint := client.config.EssEndpoint
+		if endpoint == "" {
+			endpoint = loadEndpoint(client.config.RegionId, ESSCode)
+		}
+		if endpoint != "" {
+			endpoints.AddEndpointMapping(client.config.RegionId, string(ESSCode), endpoint)
+		}
+		essconn, err := ess.NewClientWithOptions(client.config.RegionId, client.getSdkConfig(), client.config.getAuthCredential(true))
+		if err != nil {
+			return nil, fmt.Errorf("unable to initialize the ESS client: %#v", err)
+		}
+
+		essconn.AppendUserAgent(Terraform, terraformVersion)
+		essconn.AppendUserAgent(Provider, providerVersion)
+		essconn.AppendUserAgent(Module, client.config.ConfigurationSource)
+		client.essconn = essconn
+	}
+
+	return do(client.essconn)
 }
 
 func (client *ApsaraStackClient) WithVpcClient(do func(*vpc.Client) (interface{}, error)) (interface{}, error) {
