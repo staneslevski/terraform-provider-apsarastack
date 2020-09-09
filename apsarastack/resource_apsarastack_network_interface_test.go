@@ -324,9 +324,9 @@ resource "apsarastack_network_interface" "default" {
 	name = "${var.name}%d"
     vswitch_id = "${apsarastack_vswitch.default.id}"
     security_groups = [ "${apsarastack_security_group.default.id}" ]
-	//resource_group_id = "%s"
+	resource_group_id = "%s"
 }
-`, rand, os.Getenv("APSARASTaCK_RESOURCE_GROUP_ID"))
+`, rand, os.Getenv("APSARASTACK_RESOURCE_GROUP_ID"))
 }
 
 func testAccNetworkInterfaceConfig_privateIp(rand int) string {
@@ -361,9 +361,9 @@ resource "apsarastack_network_interface" "default" {
     vswitch_id = "${apsarastack_vswitch.default.id}"
     security_groups = [ "${apsarastack_security_group.default.id}" ]
     private_ip = "192.168.0.2"
-	//resource_group_id = "%s"
+	resource_group_id = "%s"
 }
-`, rand, os.Getenv("APSARASTaCK_RESOURCE_GROUP_ID"))
+`, rand, os.Getenv("APSARASTACK_RESOURCE_GROUP_ID"))
 }
 
 func testAccNetworkInterfaceConfig_private_ips(rand int) string {
@@ -399,9 +399,9 @@ resource "apsarastack_network_interface" "default" {
     security_groups = [ "${apsarastack_security_group.default.id}" ]
 	private_ip = "192.168.0.2"
 	private_ips = ["192.168.0.3", "192.168.0.5", "192.168.0.6"]
-	//resource_group_id = "%s"
+	resource_group_id = "%s"
 }
-`, rand, os.Getenv("APSARASTaCK_RESOURCE_GROUP_ID"))
+`, rand, os.Getenv("APSARASTACK_RESOURCE_GROUP_ID"))
 }
 
 func testAccNetworkInterfaceConfig_private_ips_count(rand int) string {
@@ -437,9 +437,9 @@ resource "apsarastack_network_interface" "default" {
     security_groups = [ "${apsarastack_security_group.default.id}" ]
 	private_ip = "192.168.0.2"
 	private_ips_count = 4
-	//resource_group_id = "%s"
+	resource_group_id = "%s"
 }
-`, rand, os.Getenv("APSARASTaCK_RESOURCE_GROUP_ID"))
+`, rand, os.Getenv("APSARASTACK_RESOURCE_GROUP_ID"))
 }
 
 func testAccNetworkInterfaceConfig_name(rand int) string {
@@ -475,9 +475,9 @@ resource "apsarastack_network_interface" "default" {
 	private_ip = "192.168.0.2"
 	private_ips_count = 4
     name = "${var.name}Change%d"
-	//resource_group_id = "%s"
+	resource_group_id = "%s"
 }
-`, rand, os.Getenv("APSARASTaCK_RESOURCE_GROUP_ID"))
+`, rand, os.Getenv("APSARASTACK_RESOURCE_GROUP_ID"))
 }
 
 func testAccNetworkInterfaceConfig_description(rand int) string {
@@ -515,9 +515,9 @@ resource "apsarastack_network_interface" "default" {
 	private_ips_count = 4
     name = "${var.name}Change%d"
     description = "tf-testAcc-eni-description"
-	//resource_group_id = "%s"
+	resource_group_id = "%s"
 }
-`, rand, os.Getenv("APSARASTaCK_RESOURCE_GROUP_ID"))
+`, rand, os.Getenv("APSARASTACK_RESOURCE_GROUP_ID"))
 }
 
 func testAccNetworkInterfaceConfig_tags(rand int) string {
@@ -557,9 +557,9 @@ resource "apsarastack_network_interface" "default" {
     tags = {
 		TF-VER = "Version 0.11.3"
 	}
-	//resource_group_id = "%s"
+	resource_group_id = "%s"
 }
-`, rand, os.Getenv("APSARASTaCK_RESOURCE_GROUP_ID"))
+`, rand, os.Getenv("APSARASTACK_RESOURCE_GROUP_ID"))
 }
 
 func testAccNetworkInterfaceConfig_all(rand int) string {
@@ -596,9 +596,9 @@ resource "apsarastack_network_interface" "default" {
 	private_ips_count = 1
     name = "${var.name}%d"
     description = "tf-testAcc-eni-description_all"
-	//resource_group_id = "%s"
+	resource_group_id = "%s"
 }
-`, rand, os.Getenv("APSARASTaCK_RESOURCE_GROUP_ID"))
+`, rand, os.Getenv("APSARASTACK_RESOURCE_GROUP_ID"))
 }
 
 func testAccNetworkInterfaceConfig_multi(rand int) string {
@@ -633,9 +633,9 @@ resource "apsarastack_network_interface" "default" {
     count = 3
     vswitch_id = "${apsarastack_vswitch.default.id}"
     security_groups = [ "${apsarastack_security_group.default.id}" ]
-	//resource_group_id = "%s"
+	resource_group_id = "%s"
 }
-`, rand, os.Getenv("APSARASTaCK_RESOURCE_GROUP_ID"))
+`, rand, os.Getenv("APSARASTACK_RESOURCE_GROUP_ID"))
 }
 
 var testAccCheckNetworkInterfaceCheckMap = map[string]string{

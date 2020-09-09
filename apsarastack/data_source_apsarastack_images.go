@@ -112,7 +112,6 @@ func dataSourceApsaraStackImages() *schema.Resource {
 						"disk_device_mappings": {
 							Type:     schema.TypeList,
 							Computed: true,
-							//Set:      imageDiskDeviceMappingHash,
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
 									"device": {
@@ -171,7 +170,6 @@ func dataSourceApsaraStackImages() *schema.Resource {
 	}
 }
 
-// dataSourceApsaraStackImagesDescriptionRead performs the ApsaraStack Image lookup.
 func dataSourceApsaraStackImagesRead(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*connectivity.ApsaraStackClient)
 

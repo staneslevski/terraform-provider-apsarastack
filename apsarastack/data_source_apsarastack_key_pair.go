@@ -213,9 +213,8 @@ func keyPairsDescriptionAttributes(d *schema.ResourceData, keyPairs []ecs.KeyPai
 			"id":           key.KeyPairName,
 			"key_name":     key.KeyPairName,
 			"finger_print": key.KeyPairFingerPrint,
-			//"resource_group_id": key.ResourceGroupId,
-			"instances": keyPairsAttach[key.KeyPairName],
-			"tags":      ecsService.tagsToMap(key.Tags.Tag),
+			"instances":    keyPairsAttach[key.KeyPairName],
+			"tags":         ecsService.tagsToMap(key.Tags.Tag),
 		}
 
 		names = append(names, string(key.KeyPairName))

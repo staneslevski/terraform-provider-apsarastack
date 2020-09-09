@@ -32,7 +32,6 @@ func TestAccApsaraStackSecurityGroupRulesDataSourceWithDirection(t *testing.T) {
 					resource.TestCheckResourceAttr("data.apsarastack_security_group_rules.ingress", "rules.0.dest_group_id", ""),
 					resource.TestCheckResourceAttr("data.apsarastack_security_group_rules.ingress", "rules.0.dest_group_owner_account", ""),
 					resource.TestCheckResourceAttrSet("data.apsarastack_security_group_rules.ingress", "rules.0.priority"),
-					//resource.TestCheckResourceAttr("data.apsarastack_security_group_rules.ingress", "rules.0.description", ""),
 					resource.TestCheckResourceAttrSet("data.apsarastack_security_group_rules.ingress", "rules.0.nic_type"),
 				),
 			},
@@ -66,7 +65,6 @@ func TestAccApsaraStackSecurityGroupRulesDataSourceWithGroupId(t *testing.T) {
 					resource.TestCheckResourceAttr("data.apsarastack_security_group_rules.egress", "rules.0.dest_group_id", ""),
 					resource.TestCheckResourceAttr("data.apsarastack_security_group_rules.egress", "rules.0.dest_group_owner_account", ""),
 					resource.TestCheckResourceAttrSet("data.apsarastack_security_group_rules.egress", "rules.0.priority"),
-					//resource.TestCheckResourceAttr("data.apsarastack_security_group_rules.egress", "rules.0.description", ""),
 				),
 			},
 		},
@@ -99,7 +97,6 @@ func TestAccApsaraStackSecurityGroupRulesDataSourceWithNic_Type(t *testing.T) {
 					resource.TestCheckResourceAttr("data.apsarastack_security_group_rules.egress", "rules.0.dest_group_id", ""),
 					resource.TestCheckResourceAttr("data.apsarastack_security_group_rules.egress", "rules.0.dest_group_owner_account", ""),
 					resource.TestCheckResourceAttrSet("data.apsarastack_security_group_rules.egress", "rules.0.priority"),
-					//resource.TestCheckResourceAttr("data.apsarastack_security_group_rules.egress", "rules.0.description", ""),
 				),
 			},
 		},
@@ -133,7 +130,6 @@ func TestAccApsaraStackSecurityGroupRulesDataSourceWithPolicy(t *testing.T) {
 					resource.TestCheckResourceAttr("data.apsarastack_security_group_rules.egress", "rules.0.dest_group_id", ""),
 					resource.TestCheckResourceAttr("data.apsarastack_security_group_rules.egress", "rules.0.dest_group_owner_account", ""),
 					resource.TestCheckResourceAttrSet("data.apsarastack_security_group_rules.egress", "rules.0.priority"),
-					//resource.TestCheckResourceAttr("data.apsarastack_security_group_rules.egress", "rules.0.description", ""),
 				),
 			},
 		},
@@ -166,7 +162,6 @@ func TestAccApsaraStackSecurityGroupRulesDataSourceWithIp_Protocol(t *testing.T)
 					resource.TestCheckResourceAttr("data.apsarastack_security_group_rules.egress", "rules.0.dest_group_id", ""),
 					resource.TestCheckResourceAttr("data.apsarastack_security_group_rules.egress", "rules.0.dest_group_owner_account", ""),
 					resource.TestCheckResourceAttrSet("data.apsarastack_security_group_rules.egress", "rules.0.priority"),
-					//resource.TestCheckResourceAttr("data.apsarastack_security_group_rules.egress", "rules.0.description", ""),
 				),
 			},
 		},
@@ -211,7 +206,6 @@ resource "apsarastack_vpc" "foo" {
 
 resource "apsarastack_security_group" "group" {
   name = "${var.name}"
-  //description = "apsarastack security group"
   vpc_id      = "${apsarastack_vpc.foo.id}"
 }
 
@@ -248,13 +242,11 @@ resource "apsarastack_vpc" "foo" {
 
 resource "apsarastack_security_group" "group" {
   name = "${var.name}"
-  //description = "apsarastack security group"
   vpc_id      = "${apsarastack_vpc.foo.id}"
 }
 
 resource "apsarastack_security_group" "bar" {
   name = "tf-testAccCheckApsaraStackSecurityGroupRules"
-  //description = "apsarastack security group"
   vpc_id      = "${apsarastack_vpc.foo.id}"
 }
 
@@ -286,7 +278,6 @@ variable "name" {
 
 resource "apsarastack_security_group" "group" {
   name = "${var.name}"
-  //description = "apsarastack security group"
 }
 
 resource "apsarastack_security_group_rule" "rule_ingress" {
@@ -324,7 +315,6 @@ resource "apsarastack_vpc" "foo" {
 
 resource "apsarastack_security_group" "group" {
   name = "${var.name}"
-  //description = "apsarastack security group"
   vpc_id      = "${apsarastack_vpc.foo.id}"
 }
 
@@ -363,7 +353,6 @@ resource "apsarastack_vpc" "foo" {
 
 resource "apsarastack_security_group" "group" {
   name = "${var.name}"
-  //description = "apsarastack security group"
   vpc_id      = "${apsarastack_vpc.foo.id}"
 }
 
@@ -403,7 +392,6 @@ resource "apsarastack_vpc" "foo" {
 
 resource "apsarastack_security_group" "group" {
   name = "${var.name}"
-  //description = "apsarastack security group"
   vpc_id      = "${apsarastack_vpc.foo.id}"
 }
 

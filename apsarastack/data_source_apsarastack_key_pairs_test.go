@@ -84,12 +84,11 @@ data "apsarastack_key_pairs" "default" {
 
 var existKeyPairsMapFunc = func(rand int) map[string]string {
 	return map[string]string{
-		"names.#":              "1",
-		"ids.#":                "1",
-		"key_pairs.#":          "1",
-		"key_pairs.0.id":       CHECKSET,
-		"key_pairs.0.key_name": "tf-testAcc-key-pair-datasource",
-		//	"key_pairs.0.resource_group_id": CHECKSET,
+		"names.#":                  "1",
+		"ids.#":                    "1",
+		"key_pairs.#":              "1",
+		"key_pairs.0.id":           CHECKSET,
+		"key_pairs.0.key_name":     "tf-testAcc-key-pair-datasource",
 		"key_pairs.0.instances.#":  "0",
 		"key_pairs.0.tags.%":       "2",
 		"key_pairs.0.tags.Created": "TF",

@@ -300,10 +300,9 @@ resource "apsarastack_vpc" "default" {
 }
 
 var testAccCheckVpcCheckMap = map[string]string{
-	"cidr_block":  "172.16.0.0/12",
-	"name":        "",
-	"description": "",
-	//"resource_group_id": CHECKSET,
+	"cidr_block":      "172.16.0.0/12",
+	"name":            "",
+	"description":     "",
 	"router_id":       CHECKSET,
 	"router_table_id": CHECKSET,
 	"route_table_id":  CHECKSET,

@@ -127,10 +127,6 @@ func (client *ApsaraStackClient) WithEcsClient(do func(*ecs.Client) (interface{}
 		if err != nil {
 			return nil, fmt.Errorf("unable to initialize the ECS client: %#v", err)
 		}
-
-		//if _, err := ecsconn.DescribeRegions(ecs.CreateDescribeRegionsRequest()); err != nil {
-		//	return nil, err
-		//}
 		ecsconn.AppendUserAgent(Terraform, terraformVersion)
 		ecsconn.AppendUserAgent(Provider, providerVersion)
 		ecsconn.AppendUserAgent(Module, client.config.ConfigurationSource)
