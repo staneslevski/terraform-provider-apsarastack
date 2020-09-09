@@ -111,6 +111,14 @@ func Provider() terraform.ResourceProvider {
 				Description: descriptions["domain"],
 			},
 		},
+		DataSourcesMap: map[string]*schema.Resource{},
+		ResourcesMap: map[string]*schema.Resource{
+			"apsarastack_db_database":                        resourceApsaraStackDBDatabase(),
+			"apsarastack_db_account":                         resourceApsaraStackDBAccount(),
+			"apsarastack_db_account_privilege":               resourceApsaraStackDBAccountPrivilege(),
+			"apsarastack_db_backup_policy":                   resourceApsaraStackDBBackupPolicy(),
+			"apsarastack_db_connection":                      resourceApsaraStackDBConnection(),
+			"apsarastack_db_read_write_splitting_connection": resourceApsaraStackDBReadWriteSplittingConnection(),
 		DataSourcesMap: map[string]*schema.Resource{
 			"apsarastack_instances":                      dataSourceApsaraStackInstances(),
 			"apsarastack_disks":                          dataSourceApsaraStackDisks(),
@@ -157,6 +165,9 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_reserved_instance":                   resourceApsaraStackReservedInstance(),
 			"apsarastack_image":                               resourceApsaraStackImage(),
 			"apsarastack_image_share_permission":              resourceApsaraStackImageSharePermission(),
+			"apsarastack_image_copy":                          resourceApsaraStackImageCopy(),
+			"apsarastack_image_export":                        resourceApsaraStackImageExport(),
+			"apsarastack_image_import":                        resourceApsaraStackImageImport(),
 			"apsarastack_snapshot":                            resourceApsaraStackSnapshot(),
 			"apsarastack_snapshot_policy":                     resourceApsaraStackSnapshotPolicy(),
 			"apsarastack_vswitches":                           resourceApsaraStackSwitch(),
@@ -178,8 +189,9 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_nat_gateway":                         resourceApsaraStackNatGateway(),
 			"apsarastack_snat_entry":                          resourceApsaraStackSnatEntry(),
 			"apsarastack_db_instance":                         resourceApsaraStackDBInstance(),
+			"apsarastack_db_readonly_instance":                resourceApsaraStackDBReadonlyInstance(),			
 			"apsarastack_slb_server_certificate":              resourceApsaraStackSlbServerCertificate(),
-			"apsarastack_slb_backend_server":                  resourceApsaraStackSlbBackendServer(),
+			"apsarastack_slb_backend_server":                  resourceApsaraStackSlbBackendServer(),			
 		},
 
 		ConfigureFunc: providerConfigure,
@@ -217,8 +229,8 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 		SkipRegionValidation: d.Get("skip_region_validation").(bool),
 		ConfigurationSource:  d.Get("configuration_source").(string),
 		Protocol:             d.Get("protocol").(string),
-		Insecure:             d.Get("insecure").(bool),
-		Proxy:                d.Get("proxy").(string),
+		//Insecure:             d.Get("insecure").(bool),
+		//Proxy:                d.Get("proxy").(string),
 	}
 	token := getProviderConfig(d.Get("security_token").(string), "sts_token")
 	config.SecurityToken = strings.TrimSpace(token)

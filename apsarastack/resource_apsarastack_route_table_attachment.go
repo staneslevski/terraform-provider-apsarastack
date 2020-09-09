@@ -11,9 +11,9 @@ import (
 
 func resourceApsaraStackRouteTableAttachment() *schema.Resource {
 	return &schema.Resource{
-		Create: resourceAliyunRouteTableAttachmentCreate,
-		Read:   resourceAliyunRouteTableAttachmentRead,
-		Delete: resourceAliyunRouteTableAttachmentDelete,
+		Create: resourceApsaraStackTableAttachmentCreate,
+		Read:   resourceApsaraStackRouteTableAttachmentRead,
+		Delete: resourceApsaraStackRouteTableAttachmentDelete,
 		Importer: &schema.ResourceImporter{
 			State: schema.ImportStatePassthrough,
 		},
@@ -33,7 +33,7 @@ func resourceApsaraStackRouteTableAttachment() *schema.Resource {
 	}
 }
 
-func resourceAliyunRouteTableAttachmentCreate(d *schema.ResourceData, meta interface{}) error {
+func resourceApsaraStackTableAttachmentCreate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*connectivity.ApsaraStackClient)
 	vpcService := VpcService{client}
 
@@ -66,10 +66,10 @@ func resourceAliyunRouteTableAttachmentCreate(d *schema.ResourceData, meta inter
 	if err := vpcService.WaitForVSwitch(request.VSwitchId, Available, DefaultTimeoutMedium); err != nil {
 		return WrapError(err)
 	}
-	return resourceAliyunRouteTableAttachmentRead(d, meta)
+	return resourceApsaraStackRouteTableAttachmentRead(d, meta)
 }
 
-func resourceAliyunRouteTableAttachmentRead(d *schema.ResourceData, meta interface{}) error {
+func resourceApsaraStackRouteTableAttachmentRead(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*connectivity.ApsaraStackClient)
 	vpcService := VpcService{client}
 	object, err := vpcService.DescribeRouteTableAttachment(d.Id())
@@ -89,7 +89,7 @@ func resourceAliyunRouteTableAttachmentRead(d *schema.ResourceData, meta interfa
 	return nil
 }
 
-func resourceAliyunRouteTableAttachmentDelete(d *schema.ResourceData, meta interface{}) error {
+func resourceApsaraStackRouteTableAttachmentDelete(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*connectivity.ApsaraStackClient)
 	vpcService := VpcService{client}
 

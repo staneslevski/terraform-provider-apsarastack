@@ -72,7 +72,6 @@ func dataSourceApsaraStackZones() *schema.Resource {
 					string(ClassicInternet),
 				}, false),
 			},
-
 			"available_slb_address_ip_version": {
 				Type:     schema.TypeString,
 				Optional: true,
