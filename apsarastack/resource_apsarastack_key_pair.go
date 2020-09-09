@@ -28,13 +28,10 @@ func resourceApsaraStackKeyPair() *schema.Resource {
 
 		Schema: map[string]*schema.Schema{
 			"key_name": {
-				Type:     schema.TypeString,
-				Required: true,
-				//	Optional:      true,
-				//	Computed:      true,
+				Type:         schema.TypeString,
+				Required:     true,
 				ForceNew:     true,
 				ValidateFunc: validation.StringLenBetween(2, 128),
-				//ConflictsWith: []string{"key_name_prefix"},
 			},
 			"key_name_prefix": {
 				Type:         schema.TypeString,

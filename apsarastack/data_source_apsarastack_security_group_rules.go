@@ -100,10 +100,6 @@ func dataSourceApsaraStackSecurityGroupRules() *schema.Resource {
 							Type:     schema.TypeString,
 							Computed: true,
 						},
-						//"description": {//has been removed for Apsarastack
-						//	Type:     schema.TypeString,
-						//	Computed: true,
-						//},
 					},
 				},
 			},
@@ -163,7 +159,6 @@ func dataSourceApsaraStackSecurityGroupRulesRead(d *schema.ResourceData, meta in
 				"policy":                     strings.ToLower(string(item.Policy)),
 				"nic_type":                   item.NicType,
 				"direction":                  item.Direction,
-				//"description":                item.Description,//has been removed for Apsarastack
 			}
 
 			pri, err := strconv.Atoi(item.Priority)
