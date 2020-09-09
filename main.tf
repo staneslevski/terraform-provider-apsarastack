@@ -18,7 +18,7 @@ output "first_scaling_rule" {
 
 
 #Resource ScalingRules
-resource "apsarastack_ess-scalingrule" "scale1" {
+resource "apsarastack_ess_scalingrule" "scale1" {
  scaling_group_id = "asg-bp1dblxm94yxbf88w3na"
  adjustment_type  = "TotalCapacity"
  adjustment_value = 1
