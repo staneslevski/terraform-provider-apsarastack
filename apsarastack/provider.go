@@ -142,6 +142,7 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_db_zones":                       dataSourceApsaraStackDBZones(),
 			"apsarastack_slb_server_certificates":        dataSourceApsaraStackSlbServerCertificates(),
 			"apsarastack_slb_backend_servers":            dataSourceApsaraStackSlbBackendServers(),
+			"apsarastack_ess_scaling_configurations":     dataSourceApsaraStackEssScalingConfigurations(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"apsarastack_disk":                                resourceApsaraStackDisk(),
@@ -179,6 +180,7 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_db_instance":                         resourceApsaraStackDBInstance(),
 			"apsarastack_slb_server_certificate":              resourceApsaraStackSlbServerCertificate(),
 			"apsarastack_slb_backend_server":                  resourceApsaraStackSlbBackendServer(),
+			"apsarastack_ess_scaling_configuration":           resourceApsaraStackEssScalingConfiguration(),
 		},
 
 		ConfigureFunc: providerConfigure,
