@@ -142,6 +142,7 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_slb_backend_servers":            dataSourceApsaraStackSlbBackendServers(),
 			"apsarastack_oss_buckets":                    dataSourceApsaraStackOssBuckets(),
 			"apsarastack_oss_bucket_objects":             dataSourceApsaraStackOssBucketObjects(),
+			"apsarastack_ess_scaling_groups":             dataSourceApsaraStackEssScalingGroups(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"apsarastack_disk":                                resourceApsaraStackDisk(),
@@ -180,6 +181,8 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_slb_backend_server":                  resourceApsaraStackSlbBackendServer(),
 			"apsarastack_oss_bucket":                          resourceApsaraStackOssBucket(),
 			"apsarastack_oss_bucket_object":                   resourceApsaraStackOssBucketObject(),
+			"apsarastack_ess_scaling_group":                   resourceApsaraStackEssScalingGroup(),
+			"apsarastack_ess_scalinggroup_vserver_groups":     resourceApsaraStackEssScalingGroupVserverGroups(),
 		},
 
 		ConfigureFunc: providerConfigure,
