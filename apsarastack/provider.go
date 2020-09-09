@@ -111,17 +111,14 @@ func Provider() terraform.ResourceProvider {
 				Description: descriptions["domain"],
 			},
 		},
-		DataSourcesMap: map[string]*schema.Resource{
-
-			"apsarastack_kvstore_instances":        dataSourceApsaraStackKVStoreInstances(),
-			"apsarastack_kvstore_zones":            dataSourceApsaraStackKVStoreZones(),
-			"apsarastack_kvstore_instance_classes": dataSourceApsaraStackKVStoreInstanceClasses(),
-			"apsarastack_kvstore_instance_engines": dataSourceApsaraStackKVStoreInstanceEngines(),
-		},
+		DataSourcesMap: map[string]*schema.Resource{},
 		ResourcesMap: map[string]*schema.Resource{
-			"apsarastack_kvstore_instance":      resourceApsaraStackKVStoreInstance(),
-			"apsarastack_kvstore_backup_policy": resourceApsaraStackKVStoreBackupPolicy(),
-			"apsarastack_kvstore_account":       resourceApsaraStackKVstoreAccount(),
+			"apsarastack_db_database":                        resourceApsaraStackDBDatabase(),
+			"apsarastack_db_account":                         resourceApsaraStackDBAccount(),
+			"apsarastack_db_account_privilege":               resourceApsaraStackDBAccountPrivilege(),
+			"apsarastack_db_backup_policy":                   resourceApsaraStackDBBackupPolicy(),
+			"apsarastack_db_connection":                      resourceApsaraStackDBConnection(),
+			"apsarastack_db_read_write_splitting_connection": resourceApsaraStackDBReadWriteSplittingConnection(),
 		},
 
 		ConfigureFunc: providerConfigure,
