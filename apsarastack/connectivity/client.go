@@ -14,7 +14,9 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/hbase"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/location"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/polardb"
+
 	//r_kvstore "github.com/aliyun/alibaba-cloud-sdk-go/services/r_kvstore"
+
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/r-kvstore"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/rds"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/slb"
@@ -273,6 +275,74 @@ func (client *ApsaraStackClient) WithAdbClient(do func(*adb.Client) (interface{}
 				endpoint = fmt.Sprintf("%s.adb.aliyuncs.com", client.config.RegionId)
 			}
 		}
+
+
+		adbconn, err := adb.NewClientWithOptions(client.config.RegionId, client.getSdkConfig(), client.config.getAuthCredential(true))
+		if err != nil {
+			return nil, fmt.Errorf("unable to initialize the adb client: %#v", err)
+
+		}
+
+		adbconn.AppendUserAgent(Terraform, terraformVersion)
+		adbconn.AppendUserAgent(Provider, providerVersion)
+		adbconn.AppendUserAgent(Module, client.config.ConfigurationSource)
+		client.adbconn = adbconn
+	}
+
+	return do(client.adbconn)
+}
+func (client *ApsaraStackClient) WithHbaseClient(do func(*hbase.Client) (interface{}, error)) (interface{}, error) {
+	// Initialize the HBase client if necessary
+	if client.hbaseconn == nil {
+		endpoint := client.config.HBaseEndpoint
+		if endpoint == "" {
+			endpoint = loadEndpoint(client.config.RegionId, HBASECode)
+		}
+		if endpoint != "" {
+			endpoints.AddEndpointMapping(client.config.RegionId, string(HBASECode), endpoint)
+		}
+		hbaseconn, err := hbase.NewClientWithOptions(client.config.RegionId, client.getSdkConfig(), client.config.getAuthCredential(true))
+		if err != nil {
+			return nil, fmt.Errorf("unable to initialize the hbase client: %#v", err)
+		}
+
+		hbaseconn.AppendUserAgent(Terraform, terraformVersion)
+		hbaseconn.AppendUserAgent(Provider, providerVersion)
+		hbaseconn.AppendUserAgent(Module, client.config.ConfigurationSource)
+		client.hbaseconn = hbaseconn
+	}
+
+	return do(client.hbaseconn)
+}
+func (client *ApsaraStackClient) WithFcClient(do func(*fc.Client) (interface{}, error)) (interface{}, error) {
+	goSdkMutex.Lock()
+	defer goSdkMutex.Unlock()
+
+	// Initialize the FC client if necessary
+	if client.fcconn == nil {
+		endpoint := client.config.FcEndpoint
+		if endpoint == "" {
+			endpoint = loadEndpoint(client.config.RegionId, FCCode)
+			if endpoint == "" {
+				endpoint = fmt.Sprintf("%s.fc.aliyuncs.com", client.config.RegionId)
+			}
+		}
+		if strings.HasPrefix(endpoint, "http") {
+			endpoint = strings.TrimPrefix(strings.TrimPrefix(endpoint, "http://"), "https://")
+		}
+		accountId, err := client.AccountId()
+		if err != nil {
+			return nil, err
+		}
+
+		config := client.getSdkConfig()
+		clientOptions := []fc.ClientOption{fc.WithSecurityToken(client.config.SecurityToken), fc.WithTransport(config.HttpTransport),
+			fc.WithTimeout(30), fc.WithRetryCount(DefaultClientRetryCountSmall)}
+		fcconn, err := fc.NewClient(fmt.Sprintf("https://%s.%s", accountId, endpoint), string(ApiVersion20160815), client.config.AccessKey, client.config.SecretKey, clientOptions...)
+		if err != nil {
+			return nil, fmt.Errorf("unable to initialize the FC client: %#v", err)
+		}
+
 
 		adbconn, err := adb.NewClientWithOptions(client.config.RegionId, client.getSdkConfig(), client.config.getAuthCredential(true))
 		if err != nil {
@@ -729,6 +799,30 @@ func (client *ApsaraStackClient) WithRamClient(do func(*ram.Client) (interface{}
 	}
 
 	return do(client.ramconn)
+}
+
+func (client *ApsaraStackClient) WithRdsClient(do func(*rds.Client) (interface{}, error)) (interface{}, error) {
+	// Initialize the RDS client if necessary
+	if client.rdsconn == nil {
+		endpoint := client.config.RdsEndpoint
+		if endpoint == "" {
+			endpoint = loadEndpoint(client.config.RegionId, RDSCode)
+		}
+		if endpoint != "" {
+			endpoints.AddEndpointMapping(client.config.RegionId, string(RDSCode), endpoint)
+		}
+		rdsconn, err := rds.NewClientWithOptions(client.config.RegionId, client.getSdkConfig(), client.config.getAuthCredential(true))
+		if err != nil {
+			return nil, fmt.Errorf("unable to initialize the RDS client: %#v", err)
+		}
+
+		rdsconn.AppendUserAgent(Terraform, terraformVersion)
+		rdsconn.AppendUserAgent(Provider, providerVersion)
+		rdsconn.AppendUserAgent(Module, client.config.ConfigurationSource)
+		client.rdsconn = rdsconn
+	}
+
+	return do(client.rdsconn)
 }
 
 func (client *ApsaraStackClient) WithCdnClient_new(do func(*cdn_new.Client) (interface{}, error)) (interface{}, error) {

@@ -111,6 +111,14 @@ func Provider() terraform.ResourceProvider {
 				Description: descriptions["domain"],
 			},
 		},
+		DataSourcesMap: map[string]*schema.Resource{},
+		ResourcesMap: map[string]*schema.Resource{
+			"apsarastack_db_database":                        resourceApsaraStackDBDatabase(),
+			"apsarastack_db_account":                         resourceApsaraStackDBAccount(),
+			"apsarastack_db_account_privilege":               resourceApsaraStackDBAccountPrivilege(),
+			"apsarastack_db_backup_policy":                   resourceApsaraStackDBBackupPolicy(),
+			"apsarastack_db_connection":                      resourceApsaraStackDBConnection(),
+			"apsarastack_db_read_write_splitting_connection": resourceApsaraStackDBReadWriteSplittingConnection(),
 		DataSourcesMap: map[string]*schema.Resource{
 			"apsarastack_instances":                      dataSourceApsaraStackInstances(),
 			"apsarastack_disks":                          dataSourceApsaraStackDisks(),

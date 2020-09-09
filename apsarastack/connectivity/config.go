@@ -94,6 +94,8 @@ type Config struct {
 	DcdnEndpoint            string
 	MseEndpoint             string
 	ActiontrailEndpoint     string
+	Insecure                bool
+	Proxy                   string
 }
 
 func (c *Config) loadAndValidate() error {
