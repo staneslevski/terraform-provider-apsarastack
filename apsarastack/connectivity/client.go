@@ -14,6 +14,9 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/hbase"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/location"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/polardb"
+
+	//r_kvstore "github.com/aliyun/alibaba-cloud-sdk-go/services/r_kvstore"
+
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/r-kvstore"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/rds"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/slb"
@@ -134,10 +137,10 @@ func (client *ApsaraStackClient) WithEcsClient(do func(*ecs.Client) (interface{}
 		ecsconn.AppendUserAgent(Terraform, terraformVersion)
 		ecsconn.AppendUserAgent(Provider, providerVersion)
 		ecsconn.AppendUserAgent(Module, client.config.ConfigurationSource)
-		ecsconn.SetHTTPSInsecure(client.config.Insecure)
-		if client.config.Proxy != "" {
-			ecsconn.SetHttpsProxy(client.config.Proxy)
-		}
+		//ecsconn.SetHTTPSInsecure(client.config.Insecure)
+		//if client.config.Proxy != "" {
+		//	ecsconn.SetHttpsProxy(client.config.Proxy)
+		//}
 		client.ecsconn = ecsconn
 	}
 
@@ -273,6 +276,74 @@ func (client *ApsaraStackClient) WithAdbClient(do func(*adb.Client) (interface{}
 			}
 		}
 
+
+		adbconn, err := adb.NewClientWithOptions(client.config.RegionId, client.getSdkConfig(), client.config.getAuthCredential(true))
+		if err != nil {
+			return nil, fmt.Errorf("unable to initialize the adb client: %#v", err)
+
+		}
+
+		adbconn.AppendUserAgent(Terraform, terraformVersion)
+		adbconn.AppendUserAgent(Provider, providerVersion)
+		adbconn.AppendUserAgent(Module, client.config.ConfigurationSource)
+		client.adbconn = adbconn
+	}
+
+	return do(client.adbconn)
+}
+func (client *ApsaraStackClient) WithHbaseClient(do func(*hbase.Client) (interface{}, error)) (interface{}, error) {
+	// Initialize the HBase client if necessary
+	if client.hbaseconn == nil {
+		endpoint := client.config.HBaseEndpoint
+		if endpoint == "" {
+			endpoint = loadEndpoint(client.config.RegionId, HBASECode)
+		}
+		if endpoint != "" {
+			endpoints.AddEndpointMapping(client.config.RegionId, string(HBASECode), endpoint)
+		}
+		hbaseconn, err := hbase.NewClientWithOptions(client.config.RegionId, client.getSdkConfig(), client.config.getAuthCredential(true))
+		if err != nil {
+			return nil, fmt.Errorf("unable to initialize the hbase client: %#v", err)
+		}
+
+		hbaseconn.AppendUserAgent(Terraform, terraformVersion)
+		hbaseconn.AppendUserAgent(Provider, providerVersion)
+		hbaseconn.AppendUserAgent(Module, client.config.ConfigurationSource)
+		client.hbaseconn = hbaseconn
+	}
+
+	return do(client.hbaseconn)
+}
+func (client *ApsaraStackClient) WithFcClient(do func(*fc.Client) (interface{}, error)) (interface{}, error) {
+	goSdkMutex.Lock()
+	defer goSdkMutex.Unlock()
+
+	// Initialize the FC client if necessary
+	if client.fcconn == nil {
+		endpoint := client.config.FcEndpoint
+		if endpoint == "" {
+			endpoint = loadEndpoint(client.config.RegionId, FCCode)
+			if endpoint == "" {
+				endpoint = fmt.Sprintf("%s.fc.aliyuncs.com", client.config.RegionId)
+			}
+		}
+		if strings.HasPrefix(endpoint, "http") {
+			endpoint = strings.TrimPrefix(strings.TrimPrefix(endpoint, "http://"), "https://")
+		}
+		accountId, err := client.AccountId()
+		if err != nil {
+			return nil, err
+		}
+
+		config := client.getSdkConfig()
+		clientOptions := []fc.ClientOption{fc.WithSecurityToken(client.config.SecurityToken), fc.WithTransport(config.HttpTransport),
+			fc.WithTimeout(30), fc.WithRetryCount(DefaultClientRetryCountSmall)}
+		fcconn, err := fc.NewClient(fmt.Sprintf("https://%s.%s", accountId, endpoint), string(ApiVersion20160815), client.config.AccessKey, client.config.SecretKey, clientOptions...)
+		if err != nil {
+			return nil, fmt.Errorf("unable to initialize the FC client: %#v", err)
+		}
+
+
 		adbconn, err := adb.NewClientWithOptions(client.config.RegionId, client.getSdkConfig(), client.config.getAuthCredential(true))
 		if err != nil {
 			return nil, fmt.Errorf("unable to initialize the adb client: %#v", err)
@@ -364,10 +435,10 @@ func (client *ApsaraStackClient) WithVpcClient(do func(*vpc.Client) (interface{}
 		vpcconn.AppendUserAgent(Terraform, terraformVersion)
 		vpcconn.AppendUserAgent(Provider, providerVersion)
 		vpcconn.AppendUserAgent(Module, client.config.ConfigurationSource)
-		vpcconn.SetHTTPSInsecure(client.config.Insecure)
-		if client.config.Proxy != "" {
-			vpcconn.SetHttpsProxy(client.config.Proxy)
-		}
+		//vpcconn.SetHTTPSInsecure(client.config.Insecure)
+		//if client.config.Proxy != "" {
+		//	vpcconn.SetHttpsProxy(client.config.Proxy)
+		//}
 		client.vpcconn = vpcconn
 	}
 
@@ -578,10 +649,10 @@ func (client *ApsaraStackClient) WithKmsClient(do func(*kms.Client) (interface{}
 		kmsconn.AppendUserAgent(Terraform, terraformVersion)
 		kmsconn.AppendUserAgent(Provider, providerVersion)
 		kmsconn.AppendUserAgent(Module, client.config.ConfigurationSource)
-		kmsconn.SetHTTPSInsecure(client.config.Insecure)
-		if client.config.Proxy != "" {
-			kmsconn.SetHttpsProxy(client.config.Proxy)
-		}
+		//kmsconn.SetHTTPSInsecure(client.config.Insecure)
+		//if client.config.Proxy != "" {
+		//	kmsconn.SetHttpsProxy(client.config.Proxy)
+		//}
 		client.kmsconn = kmsconn
 	}
 	return do(client.kmsconn)
@@ -633,10 +704,10 @@ func (client *ApsaraStackClient) WithBssopenapiClient(do func(*bssopenapi.Client
 		bssopenapiconn.AppendUserAgent(Terraform, terraformVersion)
 		bssopenapiconn.AppendUserAgent(Provider, providerVersion)
 		bssopenapiconn.AppendUserAgent(Module, client.config.ConfigurationSource)
-		bssopenapiconn.SetHTTPSInsecure(client.config.Insecure)
-		if client.config.Proxy != "" {
-			bssopenapiconn.SetHttpsProxy(client.config.Proxy)
-		}
+		//bssopenapiconn.SetHTTPSInsecure(client.config.Insecure)
+		//if client.config.Proxy != "" {
+		//	bssopenapiconn.SetHttpsProxy(client.config.Proxy)
+		//}
 		client.bssopenapiconn = bssopenapiconn
 	}
 
@@ -720,10 +791,10 @@ func (client *ApsaraStackClient) WithRamClient(do func(*ram.Client) (interface{}
 		ramconn.AppendUserAgent(Terraform, terraformVersion)
 		ramconn.AppendUserAgent(Provider, providerVersion)
 		ramconn.AppendUserAgent(Module, client.config.ConfigurationSource)
-		ramconn.SetHTTPSInsecure(client.config.Insecure)
-		if client.config.Proxy != "" {
-			ramconn.SetHttpsProxy(client.config.Proxy)
-		}
+		//ramconn.SetHTTPSInsecure(client.config.Insecure)
+		//if client.config.Proxy != "" {
+		//	ramconn.SetHttpsProxy(client.config.Proxy)
+		//}
 		client.ramconn = ramconn
 	}
 
@@ -772,10 +843,10 @@ func (client *ApsaraStackClient) WithCdnClient_new(do func(*cdn_new.Client) (int
 		cdnconn.AppendUserAgent(Terraform, terraformVersion)
 		cdnconn.AppendUserAgent(Provider, providerVersion)
 		cdnconn.AppendUserAgent(Module, client.config.ConfigurationSource)
-		cdnconn.SetHTTPSInsecure(client.config.Insecure)
-		if client.config.Proxy != "" {
-			cdnconn.SetHttpsProxy(client.config.Proxy)
-		}
+		//cdnconn.SetHTTPSInsecure(client.config.Insecure)
+		//if client.config.Proxy != "" {
+		//	cdnconn.SetHttpsProxy(client.config.Proxy)
+		//}
 		client.cdnconn_new = cdnconn
 	}
 
