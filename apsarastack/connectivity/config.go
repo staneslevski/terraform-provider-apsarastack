@@ -35,6 +35,19 @@ type Config struct {
 	RamRoleSessionName       string
 	RamRolePolicy            string
 	RamRoleSessionExpiration int
+	CdnEndpoint              string
+	KmsEndpoint              string
+	LocationEndpoint         string
+	EcsEndpoint              string
+	CsEndpoint               string
+	StsEndpoint              string
+	VpcEndpoint              string
+	BssOpenApiEndpoint       string
+	RamEndpoint              string
+	Insecure                 bool
+	Proxy                    string
+	OssEndpoint              string
+	EssEndpoint              string
 
 	EcsEndpoint           string
 	RdsEndpoint           string

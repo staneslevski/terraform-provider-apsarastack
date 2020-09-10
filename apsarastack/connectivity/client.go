@@ -7,6 +7,10 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/adb"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/bssopenapi"
 	cdn_new "github.com/aliyun/alibaba-cloud-sdk-go/services/cdn"
+	"github.com/aliyun/alibaba-cloud-sdk-go/services/ess"
+	"github.com/aliyun/alibaba-cloud-sdk-go/services/location"
+	"github.com/aliyun/alibaba-cloud-sdk-go/services/slb"
+	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/dds"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/elasticsearch"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ess"
@@ -46,6 +50,22 @@ import (
 )
 
 type ApsaraStackClient struct {
+	Region         Region
+	RegionId       string
+	AccessKey      string
+	SecretKey      string
+	config         *Config
+	ecsconn        *ecs.Client
+	vpcconn        *vpc.Client
+	slbconn        *slb.Client
+	csconn         *cs.Client
+	ossconn        *oss.Client
+	cdnconn        *cdn.CdnClient
+	cdnconn_new    *cdn_new.Client
+	kmsconn        *kms.Client
+	bssopenapiconn *bssopenapi.Client
+	ramconn        *ram.Client
+	essconn        *ess.Client
 	Region            Region
 	RegionId          string
 	AccessKey         string
@@ -346,6 +366,29 @@ func (client *ApsaraStackClient) WithFcClient(do func(*fc.Client) (interface{}, 
 
 		}
 
+func (client *ApsaraStackClient) WithEssClient(do func(*ess.Client) (interface{}, error)) (interface{}, error) {
+	// Initialize the ESS client if necessary
+	if client.essconn == nil {
+		endpoint := client.config.EssEndpoint
+		if endpoint == "" {
+			endpoint = loadEndpoint(client.config.RegionId, ESSCode)
+		}
+		if endpoint != "" {
+			endpoints.AddEndpointMapping(client.config.RegionId, string(ESSCode), endpoint)
+		}
+		essconn, err := ess.NewClientWithOptions(client.config.RegionId, client.getSdkConfig(), client.config.getAuthCredential(true))
+		if err != nil {
+			return nil, fmt.Errorf("unable to initialize the ESS client: %#v", err)
+		}
+
+		essconn.AppendUserAgent(Terraform, terraformVersion)
+		essconn.AppendUserAgent(Provider, providerVersion)
+		essconn.AppendUserAgent(Module, client.config.ConfigurationSource)
+		client.essconn = essconn
+	}
+
+	return do(client.essconn)
+}
 		adbconn.AppendUserAgent(Terraform, terraformVersion)
 		adbconn.AppendUserAgent(Provider, providerVersion)
 		adbconn.AppendUserAgent(Module, client.config.ConfigurationSource)
@@ -873,4 +916,82 @@ func (client *ApsaraStackClient) WithCsClient(do func(*cs.Client) (interface{}, 
 	}
 
 	return do(client.csconn)
+}
+
+func (client *ApsaraStackClient) getHttpProxyUrl() *url.URL {
+	for _, v := range []string{"HTTPS_PROXY", "https_proxy", "HTTP_PROXY", "http_proxy"} {
+		value := strings.Trim(os.Getenv(v), " ")
+		if value != "" {
+			if !regexp.MustCompile(`^http(s)?://`).MatchString(value) {
+				value = fmt.Sprintf("https://%s", value)
+			}
+			proxyUrl, err := url.Parse(value)
+			if err == nil {
+				return proxyUrl
+			}
+			break
+		}
+	}
+	return nil
+}
+
+func (client *ApsaraStackClient) WithOssClient(do func(*oss.Client) (interface{}, error)) (interface{}, error) {
+	goSdkMutex.Lock()
+	defer goSdkMutex.Unlock()
+
+	// Initialize the OSS client if necessary
+	if client.ossconn == nil {
+		schma := "https"
+		endpoint := client.config.OssEndpoint
+		if endpoint == "" {
+			endpoint = loadEndpoint(client.config.RegionId, OSSCode)
+		}
+		if endpoint == "" {
+			endpointItem, _ := client.describeEndpointForService(strings.ToLower(string(OSSCode)))
+			if endpointItem != nil {
+				if len(endpointItem.Protocols.Protocols) > 0 {
+					// HTTP or HTTPS
+					schma = strings.ToLower(endpointItem.Protocols.Protocols[0])
+					for _, p := range endpointItem.Protocols.Protocols {
+						if strings.ToLower(p) == "https" {
+							schma = strings.ToLower(p)
+							break
+						}
+					}
+				}
+				endpoint = endpointItem.Endpoint
+			} else {
+				endpoint = fmt.Sprintf("oss-%s.apsarastack.com", client.RegionId)
+			}
+		}
+		if !strings.HasPrefix(endpoint, "http") {
+			endpoint = fmt.Sprintf("%s://%s", schma, endpoint)
+		}
+
+		clientOptions := []oss.ClientOption{oss.UserAgent(client.getUserAgent()),
+			oss.SecurityToken(client.config.SecurityToken)}
+		proxyUrl := client.getHttpProxyUrl()
+		if proxyUrl != nil {
+			clientOptions = append(clientOptions, oss.Proxy(proxyUrl.String()))
+		}
+
+		ossconn, err := oss.New(endpoint, client.config.AccessKey, client.config.SecretKey, clientOptions...)
+		if err != nil {
+			return nil, fmt.Errorf("unable to initialize the OSS client: %#v", err)
+		}
+
+		client.ossconn = ossconn
+	}
+
+	return do(client.ossconn)
+}
+
+func (client *ApsaraStackClient) WithOssBucketByName(bucketName string, do func(*oss.Bucket) (interface{}, error)) (interface{}, error) {
+	return client.WithOssClient(func(ossClient *oss.Client) (interface{}, error) {
+		bucket, err := client.ossconn.Bucket(bucketName)
+		if err != nil {
+			return nil, fmt.Errorf("unable to get the bucket %s: %#v", bucketName, err)
+		}
+		return do(bucket)
+	})
 }

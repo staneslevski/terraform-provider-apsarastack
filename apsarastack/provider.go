@@ -150,6 +150,9 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_db_zones":                       dataSourceApsaraStackDBZones(),
 			"apsarastack_slb_server_certificates":        dataSourceApsaraStackSlbServerCertificates(),
 			"apsarastack_slb_backend_servers":            dataSourceApsaraStackSlbBackendServers(),
+			"apsarastack_oss_buckets":                    dataSourceApsaraStackOssBuckets(),
+			"apsarastack_oss_bucket_objects":             dataSourceApsaraStackOssBucketObjects(),
+			"apsarastack_ess_scaling_groups":             dataSourceApsaraStackEssScalingGroups(),
 			"apsarastack_zones":                          dataSourceApsaraStackZones(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
@@ -191,6 +194,11 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_db_instance":                         resourceApsaraStackDBInstance(),
 			"apsarastack_db_readonly_instance":                resourceApsaraStackDBReadonlyInstance(),			
 			"apsarastack_slb_server_certificate":              resourceApsaraStackSlbServerCertificate(),
+			"apsarastack_slb_backend_server":                  resourceApsaraStackSlbBackendServer(),
+			"apsarastack_oss_bucket":                          resourceApsaraStackOssBucket(),
+			"apsarastack_oss_bucket_object":                   resourceApsaraStackOssBucketObject(),
+			"apsarastack_ess_scaling_group":                   resourceApsaraStackEssScalingGroup(),
+			"apsarastack_ess_scalinggroup_vserver_groups":     resourceApsaraStackEssScalingGroupVserverGroups(),
 			"apsarastack_slb_backend_server":                  resourceApsaraStackSlbBackendServer(),			
 		},
 

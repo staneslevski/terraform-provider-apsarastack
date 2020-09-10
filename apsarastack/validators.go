@@ -6,6 +6,7 @@ import (
 	"net"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // below copy/pasta from https://github.com/hashicorp/terraform-plugin-sdk/blob/master/helper/validation/validation.go
@@ -106,6 +107,12 @@ func validateForwardPort(v interface{}, k string) (ws []string, errors []error) 
 	return
 }
 
+func validateOssBucketDateTimestamp(v interface{}, k string) (ws []string, errors []error) {
+	value := v.(string)
+	_, err := time.Parse("2006-01-02", value)
+	if err != nil {
+		errors = append(errors, fmt.Errorf(
+			"%q cannot be parsed as date YYYY-MM-DD Format", value))
 func validateDBConnectionPort(v interface{}, k string) (ws []string, errors []error) {
 	if value := v.(string); value != "" {
 		port, err := strconv.Atoi(value)
