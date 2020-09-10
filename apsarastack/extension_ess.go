@@ -7,6 +7,7 @@ const GroupId = "groupId"
 type ScalingRuleType string
 
 const (
+	SimpleScalingRule = ScalingRuleType("SimpleScalingRule")
 	SimpleScalingRule         = ScalingRuleType("SimpleScalingRule")
 	TargetTrackingScalingRule = ScalingRuleType("TargetTrackingScalingRule")
 	StepScalingRule           = ScalingRuleType("StepScalingRule")

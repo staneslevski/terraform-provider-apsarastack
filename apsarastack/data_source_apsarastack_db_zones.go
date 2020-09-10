@@ -137,7 +137,6 @@ func dataSourceApsaraStackDBZonesRead(d *schema.ResourceData, meta interface{}) 
 	}
 	return nil
 }
-
 func splitMultiZoneId(id string) (ids []string) {
 	if !(strings.Contains(id, MULTI_IZ_SYMBOL) || strings.Contains(id, "(")) {
 		return
