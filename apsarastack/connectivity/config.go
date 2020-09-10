@@ -42,6 +42,7 @@ type Config struct {
 	CsEndpoint               string
 	StsEndpoint              string
 	VpcEndpoint              string
+	OssEndpoint              string
 	BssOpenApiEndpoint       string
 	RamEndpoint              string
 	Insecure                 bool
