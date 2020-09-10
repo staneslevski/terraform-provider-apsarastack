@@ -9,6 +9,7 @@ import (
 )
 
 // OssService *connectivity.AliyunClient
+// OssService *connectivity.ApsaraStackClient
 type OssService struct {
 	client *connectivity.ApsaraStackClient
 }

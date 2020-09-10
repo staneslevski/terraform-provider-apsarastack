@@ -144,9 +144,9 @@ func testAccCheckApsaraStackNetworkInterfacesDataSourceConfig(rand int, attrMap 
 	}
 
 	config := fmt.Sprintf(`
-//variable "resource_group_id" {
-//	default = "%s"
-//}
+variable "resource_group_id" {
+	default = "%s"
+}
 
 variable "name" {
  default = "tf-testAccNetworkInterfacesBasic"
@@ -182,7 +182,6 @@ resource "apsarastack_network_interface" "default" {
 	tags = {
 		TF-VER = "0.11.3%d"
 	}
-	//resource_group_id = "${var.resource_group_id}"
 }
 
 data "apsarastack_instance_types" "default" {
