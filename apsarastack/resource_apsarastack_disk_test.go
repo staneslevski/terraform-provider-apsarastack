@@ -272,7 +272,7 @@ data "apsarastack_zones" "default" {
 resource "apsarastack_disk" "default" {
 	availability_zone = "${data.apsarastack_zones.default.zones.0.id}"
   	size = "50"
-	//resource_group_id = "%s"
+	resource_group_id = "%s"
 }
 `, os.Getenv("APSARASTACK_RESOURCE_GROUP_ID"))
 }
@@ -287,7 +287,7 @@ data "apsarastack_zones" "default" {
 resource "apsarastack_disk" "default" {
 	availability_zone = "${data.apsarastack_zones.default.zones.0.id}"
   	size = "70"
-	//resource_group_id = "%s"
+	resource_group_id = "%s"
 }
 `, os.Getenv("APSARASTACK_RESOURCE_GROUP_ID"))
 }
@@ -307,7 +307,7 @@ resource "apsarastack_disk" "default" {
 	availability_zone = "${data.apsarastack_zones.default.zones.0.id}"
   	size = "70"
 	name = "${var.name}"
-	//resource_group_id = "%s"
+	resource_group_id = "%s"
 }
 `, os.Getenv("APSARASTACK_RESOURCE_GROUP_ID"))
 }
@@ -328,7 +328,7 @@ resource "apsarastack_disk" "default" {
   	size = "70"
 	name = "${var.name}"
 	description = "${var.name}_description"
-	//resource_group_id = "%s"
+	resource_group_id = "%s"
 }
 `, os.Getenv("APSARASTACK_RESOURCE_GROUP_ID"))
 }
@@ -356,7 +356,7 @@ resource "apsarastack_disk" "default" {
 		Name2 = "Name2"
 		name3 = "name3"
 			}
-	//resource_group_id = "%s"
+	resource_group_id = "%s"
 }
 `, os.Getenv("APSARASTACK_RESOURCE_GROUP_ID"))
 }
@@ -385,7 +385,7 @@ resource "apsarastack_disk" "default" {
 		name3 = "name3"
 			}
 	delete_auto_snapshot = "true"
-	//resource_group_id = "%s"
+	resource_group_id = "%s"
 }
 `, os.Getenv("APSARASTACK_RESOURCE_GROUP_ID"))
 }
@@ -415,7 +415,7 @@ resource "apsarastack_disk" "default" {
 			}
 	delete_auto_snapshot = "true"
 	delete_with_instance = "true"
-	//resource_group_id = "%s"
+	resource_group_id = "%s"
 }
 `, os.Getenv("APSARASTACK_RESOURCE_GROUP_ID"))
 }
@@ -446,7 +446,7 @@ resource "apsarastack_disk" "default" {
 	delete_auto_snapshot = "true"
 	delete_with_instance = "true"
 	enable_auto_snapshot = "true"
-	//resource_group_id = "%s"
+	resource_group_id = "%s"
 }
 `, os.Getenv("APSARASTACK_RESOURCE_GROUP_ID"))
 }
@@ -471,7 +471,7 @@ resource "apsarastack_disk" "default" {
 	delete_auto_snapshot = "false"
 	delete_with_instance = "false"
 	enable_auto_snapshot = "false"
-	//resource_group_id = "%s"
+	resource_group_id = "%s"
 }
 `, os.Getenv("APSARASTACK_RESOURCE_GROUP_ID"))
 }
@@ -494,14 +494,13 @@ resource "apsarastack_disk" "default" {
 	description = "nothing"
 	category = "cloud_efficiency"
 	encrypted = "false"
-	//resource_group_id = "%s"
+	resource_group_id = "%s"
 }
 `, os.Getenv("APSARASTACK_RESOURCE_GROUP_ID"))
 }
 
 var testAccCheckResourceDiskBasicMap = map[string]string{
-	"availability_zone": CHECKSET,
-	//"resource_group_id":    CHECKSET,
+	"availability_zone":    CHECKSET,
 	"size":                 "50",
 	"name":                 "",
 	"description":          "",

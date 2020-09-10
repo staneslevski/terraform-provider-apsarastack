@@ -45,11 +45,6 @@ func resourceApsaraStackSnatEntry() *schema.Resource {
 				ForceNew:      true,
 				ConflictsWith: strings.Fields("source_vswitch_id"),
 			},
-			//snat_entry_name is not supported in apsarastack snat service
-			/*"snat_entry_name": {
-				Type:     schema.TypeString,
-				Optional: true,
-			},*/
 			"snat_entry_id": {
 				Type:     schema.TypeString,
 				Computed: true,
@@ -70,10 +65,6 @@ func resourceApsaraStackSnatEntryCreate(d *schema.ResourceData, meta interface{}
 	if v, ok := d.GetOk("source_cidr"); ok {
 		request.SourceCIDR = v.(string)
 	}
-
-	/*if v, ok := d.GetOk("snat_entry_name"); ok {
-		request.SnatEntryName = v.(string)
-	}*/
 	if err := resource.Retry(3*time.Minute, func() *resource.RetryError {
 		ar := request
 		raw, err := client.WithVpcClient(func(vpcClient *vpc.Client) (interface{}, error) {
@@ -126,7 +117,6 @@ func resourceApsaraStackSnatEntryRead(d *schema.ResourceData, meta interface{}) 
 	}
 	d.Set("snat_ip", object.SnatIp)
 	d.Set("snat_entry_id", object.SnatEntryId)
-	//d.Set("snat_entry_name", object.SnatEntryName)
 
 	return nil
 }
@@ -153,11 +143,6 @@ func resourceApsaraStackSnatEntryUpdate(d *schema.ResourceData, meta interface{}
 		update = true
 		request.SnatIp = d.Get("snat_ip").(string)
 	}
-
-	/*if d.HasChange("snat_entry_name") {
-		update = true
-		request.SnatEntryName = d.Get("snat_entry_name").(string)
-	}*/
 
 	if update {
 		raw, err := client.WithVpcClient(func(vpcClient *vpc.Client) (interface{}, error) {

@@ -51,9 +51,8 @@ func TestAccApsaraStackSlbAclsDataSource_basic(t *testing.T) {
 
 	allConf := dataSourceTestAccConfig{
 		existConfig: testAccCheckApsaraStackSlbAclsDataSourceConfig(rand, map[string]string{
-			"ids":        `["${apsarastack_slb_acl.default.id}"]`,
-			"name_regex": `"${apsarastack_slb_acl.default.name}"`,
-			// The resource route tables do not support resource_group_id, so it was set empty.
+			"ids":               `["${apsarastack_slb_acl.default.id}"]`,
+			"name_regex":        `"${apsarastack_slb_acl.default.name}"`,
 			"resource_group_id": `""`,
 		}),
 		fakeConfig: testAccCheckApsaraStackSlbAclsDataSourceConfig(rand, map[string]string{

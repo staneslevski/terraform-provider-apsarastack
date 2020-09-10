@@ -37,7 +37,6 @@ func TestAccApsaraStackSlbMasterSlaveServerGroup_vpc(t *testing.T) {
 		CheckDestroy:  rac.checkResourceDestroy(),
 		Steps: []resource.TestStep{
 			{
-				//Config: testAccSlbMasterSlaveServerGroupVpc,
 				Config: testAccConfig(map[string]interface{}{
 					"load_balancer_id": "${apsarastack_slb.default.id}",
 					"name":             "${var.name}",
