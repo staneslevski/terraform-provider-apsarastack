@@ -62,14 +62,6 @@ func TestAccApsaraStackSnatEntryBasic(t *testing.T) {
 		Providers:     testAccProviders,
 		CheckDestroy:  testAccCheckSnatEntryDestroy,
 		Steps: []resource.TestStep{
-			//{
-			//	Config: testAccSnatEntryConfigBasic(rand),
-			//	Check: resource.ComposeTestCheckFunc(
-			//		testAccCheck(map[string]string{
-			//			"snat_entry_name": fmt.Sprintf("tf-testAccSnatEntryConfig%d", rand),
-			//		}),
-			//	),
-			//},
 			{
 				ResourceName:      resourceId,
 				ImportState:       true,
@@ -81,14 +73,6 @@ func TestAccApsaraStackSnatEntryBasic(t *testing.T) {
 					testAccCheck(nil),
 				),
 			},
-			//{
-			//	Config: testAccSnatEntryConfig_snatname(rand),
-			//	Check: resource.ComposeTestCheckFunc(
-			//		testAccCheck(map[string]string{
-			//			"snat_entry_name": fmt.Sprintf("tf-testAccSnatEntryConfig%d-update", rand),
-			//		}),
-			//	),
-			//},
 		},
 	})
 
@@ -173,7 +157,6 @@ resource "apsarastack_snat_entry" "default"{
 	snat_table_id = "${apsarastack_nat_gateway.default.snat_table_ids}"
 	source_vswitch_id = "${apsarastack_vswitch.default.id}"
 	snat_ip = "${apsarastack_eip.default.ip_address}"
-    //snat_entry_name = "${var.name}"
 }
 
 resource "apsarastack_snat_entry" "ecs"{
@@ -229,7 +212,6 @@ resource "apsarastack_snat_entry" "default"{
 	snat_table_id = "${apsarastack_nat_gateway.default.snat_table_ids}"
 	source_vswitch_id = "${apsarastack_vswitch.default.id}"
 	snat_ip = "${apsarastack_eip.default.ip_address}"
-    //snat_entry_name = "${var.name}"
 }
 
 resource "apsarastack_snat_entry" "ecs"{
@@ -286,7 +268,6 @@ resource "apsarastack_snat_entry" "default"{
 	snat_table_id = "${apsarastack_nat_gateway.default.snat_table_ids}"
 	source_vswitch_id = "${apsarastack_vswitch.default.id}"
 	snat_ip = "${apsarastack_eip.default.ip_address}"
-    //snat_entry_name = "${var.name}-update"
 }
 
 resource "apsarastack_snat_entry" "ecs"{
@@ -346,7 +327,6 @@ resource "apsarastack_snat_entry" "default"{
 	snat_table_id = "${apsarastack_nat_gateway.default.snat_table_ids}"
 	source_vswitch_id = "${element(apsarastack_vswitch.default.*.id, count.index)}"
 	snat_ip = "${apsarastack_eip.default.ip_address}"
-    //snat_entry_name = "${var.name}"
 }
 
 resource "apsarastack_snat_entry" "ecs"{

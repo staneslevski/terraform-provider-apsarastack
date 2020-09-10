@@ -21,16 +21,6 @@ func dataSourceApsaraStackSnatEntries() *schema.Resource {
 				Type:     schema.TypeString,
 				Optional: true,
 			},
-			//snat_ip,source_cidr request body parameters are not supported in apsarastack snat service
-			/*"snat_ip": {
-				Type:     schema.TypeString,
-				Optional: true,
-			},
-			"source_cidr": {
-				Type:     schema.TypeString,
-				Optional: true,
-			},*/
-			// the snat_entry resource id is spliced from snat_table_id and snat_entry_id, but,this id refers to snat_entry_id
 			"ids": {
 				Type:     schema.TypeList,
 				Optional: true,
@@ -102,12 +92,6 @@ func dataSourceApsaraStackSnatEntriesRead(d *schema.ResourceData, meta interface
 		}
 
 		for _, entries := range response.SnatTableEntries.SnatTableEntry {
-			/*if snat_ip, ok := d.GetOk("snat_ip"); ok && entries.SnatIp != snat_ip.(string) {
-				continue
-			}
-			if source_cidr, ok := d.GetOk("source_cidr"); ok && entries.SourceCIDR != source_cidr.(string) {
-				continue
-			}*/
 			if len(idsMap) > 0 {
 				if _, ok := idsMap[entries.SnatEntryId]; !ok {
 					continue

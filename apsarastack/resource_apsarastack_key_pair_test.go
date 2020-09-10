@@ -185,7 +185,6 @@ func TestAccApsaraStackKeyPairBasic(t *testing.T) {
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheck(map[string]string{
 						"public_key": "ssh-rsa AAAAB3Nza12345678qwertyuudsfsg",
-						//"resource_group_id": "",
 					}),
 				),
 			},
@@ -258,7 +257,6 @@ func TestAccApsaraStackKeyPairMulti(t *testing.T) {
 var testAccCheckKeyPairBasicMap = map[string]string{
 	"finger_print": CHECKSET,
 	"key_name":     CHECKSET,
-	//"resource_group_id": CHECKSET,
 }
 
 func testAccKeyPairConfigBasic(rand int) string {

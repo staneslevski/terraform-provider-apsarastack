@@ -171,9 +171,9 @@ func testAccCheckApsaraStackInstancesDataSourceConfig(rand int, attrMap map[stri
 	config := fmt.Sprintf(`
 	%s
 
-	//variable "resource_group_id" {
-	//	default = "%s"
-	//}
+	variable "resource_group_id" {
+		default = "%s"
+	}
 
 	variable "name" {
 		default = "tf-testAccCheckApsaraStackInstancesDataSource%d"
@@ -188,7 +188,6 @@ func testAccCheckApsaraStackInstancesDataSourceConfig(rand int, attrMap map[stri
 		instance_name = "${var.name}"
 		system_disk_category = "cloud_efficiency"
 		security_groups = ["${apsarastack_security_group.default.id}"]
-		//resource_group_id = "${var.resource_group_id}"
 		role_name = "${apsarastack_ram_role.default.name}"
 		data_disks {
 				name  = "${var.name}-disk1"
@@ -238,7 +237,7 @@ func testAccCheckApsaraStackInstancesDataSourceConfig(rand int, attrMap map[stri
 
 	data "apsarastack_instances" "default" {
 		%s
-	}`, EcsInstanceCommonNoZonesTestCase, os.Getenv("APSARASTaCK_RESOURCE_GROUP_ID"), rand, strings.Join(pairs, "\n  "))
+	}`, EcsInstanceCommonNoZonesTestCase, os.Getenv("APSARASTACK_RESOURCE_GROUP_ID"), rand, strings.Join(pairs, "\n  "))
 	return config
 }
 
