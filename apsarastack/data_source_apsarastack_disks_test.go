@@ -198,7 +198,6 @@ resource "apsarastack_disk" "default" {
 		Name1 = "TerraformTest"
 	}
 	size = "20"
-	//resource_group_id = "${var.resource_group_id}"
 }
 
 resource "apsarastack_instance" "default" {

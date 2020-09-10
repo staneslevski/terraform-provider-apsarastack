@@ -58,10 +58,9 @@ func resourceApsaraStackSecurityGroupRule() *schema.Resource {
 			},
 
 			"port_range": {
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-				//Default:          AllPortRange,//port_range has been set to Required in Apsarastack and Default cannot be used with Required
+				Type:             schema.TypeString,
+				Required:         true,
+				ForceNew:         true,
 				DiffSuppressFunc: ecsSecurityGroupRulePortRangeDiffSuppressFunc,
 			},
 

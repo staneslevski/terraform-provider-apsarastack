@@ -344,7 +344,6 @@ func addDebug(action, content interface{}, requestInfo ...interface{}) {
 				request.Method, request.Product, request.Region, request.ActionName, requestContent)
 		}
 
-		//fmt.Printf(DefaultDebugMsg, action, content, trace)
 		log.Printf(DefaultDebugMsg, action, content, trace)
 	}
 }

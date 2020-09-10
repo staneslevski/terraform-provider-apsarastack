@@ -28,7 +28,7 @@ const (
 	// RAM Instance Not Found
 	RamInstanceNotFound        = "Forbidden.InstanceNotFound"
 	ApsaraStackGoClientFailure = "ApsaraStackGoClientFailure"
-	DenverdinoAliyungo         = ErrorSource("[SDK denverdino/aliyungo ERROR]")
+	DenverdinoApsaraStackgo    = ErrorSource("[SDK denverdino/aliyungo ERROR]")
 )
 
 var SlbIsBusy = []string{"SystemBusy", "OperationBusy", "ServiceIsStopping", "BackendServer.configuring", "ServiceIsConfiguring"}
@@ -38,6 +38,7 @@ var NetworkInterfaceInvalidOperations = []string{"InvalidOperation.InvalidEniSta
 var SnapshotInvalidOperations = []string{"OperationConflict", "ServiceUnavailable", "InternalError", "SnapshotCreatedDisk", "SnapshotCreatedImage"}
 var SnapshotPolicyInvalidOperations = []string{"OperationConflict", "ServiceUnavailable", "InternalError", "SnapshotCreatedDisk", "SnapshotCreatedImage"}
 var DiskNotSupportOnlineChangeErrors = []string{"InvalidDiskCategory.NotSupported", "InvalidRegion.NotSupport", "IncorrectInstanceStatus", "IncorrectDiskStatus", "InvalidOperation.InstanceTypeNotSupport"}
+var DBReadInstanceNotReadyStatus = []string{"OperationDenied.ReadDBInstanceStatus", "OperationDenied.MasterDBInstanceState", "ReadDBInstance.Mismatch"}
 
 // An Error represents a custom error for Terraform failure response
 type ProviderError struct {
@@ -302,6 +303,9 @@ const RequestIdMsg = "RequestId: %s"
 const NotFoundMsg = ResourceNotfound + "!!! %s"
 const WaitTimeoutMsg = "Resource %s %s Timeout In %d Seconds. Got: %s Expected: %s !!! %s"
 const DataDefaultErrorMsg = "Datasource %s %s Failed!!! %s"
+
+var OperationDeniedDBStatus = []string{"OperationDenied.DBStatus", "OperationDenied.DBInstanceStatus", "OperationDenied.DBClusterStatus", "InternalError", "OperationDenied.OutofUsage"}
+
 const IdMsg = "Resource id：%s "
 const DefaultTimeoutMsg = "Resource %s %s Timeout!!! %s"
 const DefaultDebugMsg = "\n*************** %s Response *************** \n%s\n%s******************************\n\n"

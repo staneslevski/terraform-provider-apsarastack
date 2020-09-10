@@ -113,6 +113,15 @@ func validateOssBucketDateTimestamp(v interface{}, k string) (ws []string, error
 	if err != nil {
 		errors = append(errors, fmt.Errorf(
 			"%q cannot be parsed as date YYYY-MM-DD Format", value))
+func validateDBConnectionPort(v interface{}, k string) (ws []string, errors []error) {
+	if value := v.(string); value != "" {
+		port, err := strconv.Atoi(value)
+		if err != nil {
+			errors = append(errors, err)
+		}
+		if port < 3001 || len(value) > 3999 {
+			errors = append(errors, fmt.Errorf("%q cannot be less than 3001 and larger than 3999.", k))
+		}
 	}
 	return
 }
