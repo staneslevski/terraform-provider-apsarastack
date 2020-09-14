@@ -12,6 +12,18 @@ import (
 type ServiceCode string
 
 const (
+	ECSCode        = ServiceCode("ECS")
+	VPCCode        = ServiceCode("VPC")
+	KMSCode        = ServiceCode("KMS")
+	BSSOPENAPICode = ServiceCode("BSSOPENAPI")
+	RAMCode        = ServiceCode("RAM")
+	CDNCode        = ServiceCode("CDN")
+	SLBCode        = ServiceCode("SLB")
+	OSSCode        = ServiceCode("OSS")
+	LOCATIONCode   = ServiceCode("LOCATION")
+	CONTAINCode    = ServiceCode("CS")
+	OSSCode        = ServiceCode("OSS")
+	ESSCode        = ServiceCode("ESS")
 	DcdnCode            = ServiceCode("DCDN")
 	MseCode             = ServiceCode("MSE")
 	ActiontrailCode     = ServiceCode("ACTIONTRAIL")

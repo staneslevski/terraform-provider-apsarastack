@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/acctest"
+	"github.com/hashicorp/terraform/helper/acctest"
 )
 
 func TestAccApsaraStackSlbServerCertificatesDataSource_basic(t *testing.T) {
@@ -113,6 +114,6 @@ resource "apsarastack_slb_server_certificate" "default" {
 data "apsarastack_slb_server_certificates" "default" {
   %s
 }
-`, rand, os.Getenv("APSARASTaCK_RESOURCE_GROUP_ID"), strings.Join(pairs, "\n  "))
+`, rand, os.Getenv("APSARASTACK_RESOURCE_GROUP_ID"), strings.Join(pairs, "\n  "))
 	return config
 }
