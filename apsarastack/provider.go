@@ -111,14 +111,6 @@ func Provider() terraform.ResourceProvider {
 				Description: descriptions["domain"],
 			},
 		},
-		DataSourcesMap: map[string]*schema.Resource{},
-		ResourcesMap: map[string]*schema.Resource{
-			"apsarastack_db_database":                        resourceApsaraStackDBDatabase(),
-			"apsarastack_db_account":                         resourceApsaraStackDBAccount(),
-			"apsarastack_db_account_privilege":               resourceApsaraStackDBAccountPrivilege(),
-			"apsarastack_db_backup_policy":                   resourceApsaraStackDBBackupPolicy(),
-			"apsarastack_db_connection":                      resourceApsaraStackDBConnection(),
-			"apsarastack_db_read_write_splitting_connection": resourceApsaraStackDBReadWriteSplittingConnection(),
 		DataSourcesMap: map[string]*schema.Resource{
 			"apsarastack_instances":                      dataSourceApsaraStackInstances(),
 			"apsarastack_disks":                          dataSourceApsaraStackDisks(),
@@ -156,6 +148,7 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_oss_bucket_objects":             dataSourceApsaraStackOssBucketObjects(),
 			"apsarastack_ess_scaling_groups":             dataSourceApsaraStackEssScalingGroups(),
 			"apsarastack_zones":                          dataSourceApsaraStackZones(),
+      "apsarastack_ess_scheduled_tasks":            dataSourceApsaraStackEssScheduledTasks(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"apsarastack_disk":                                resourceApsaraStackDisk(),
@@ -206,7 +199,8 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_oss_bucket_object":                   resourceApsaraStackOssBucketObject(),
 			"apsarastack_ess_scaling_group":                   resourceApsaraStackEssScalingGroup(),
 			"apsarastack_ess_scalinggroup_vserver_groups":     resourceApsaraStackEssScalingGroupVserverGroups(),
-			"apsarastack_slb_backend_server":                  resourceApsaraStackSlbBackendServer(),			
+			"apsarastack_slb_backend_server":                  resourceApsaraStackSlbBackendServer(),
+      "apsarastack_ess_scheduled_task":                  resourceApsaraStackEssScheduledTask(),
 		},
 
 		ConfigureFunc: providerConfigure,
@@ -244,8 +238,8 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 		SkipRegionValidation: d.Get("skip_region_validation").(bool),
 		ConfigurationSource:  d.Get("configuration_source").(string),
 		Protocol:             d.Get("protocol").(string),
-		//Insecure:             d.Get("insecure").(bool),
-		//Proxy:                d.Get("proxy").(string),
+		Insecure:             d.Get("insecure").(bool),
+		Proxy:                d.Get("proxy").(string),
 	}
 	token := getProviderConfig(d.Get("security_token").(string), "sts_token")
 	config.SecurityToken = strings.TrimSpace(token)
