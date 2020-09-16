@@ -119,7 +119,7 @@ func resourceApsaraStackInstance() *schema.Resource {
 				Default:      DiskCloudEfficiency,
 				Optional:     true,
 				ForceNew:     true,
-				ValidateFunc: validation.StringInSlice([]string{"all", "cloud", "ephemeral_ssd", "cloud_efficiency", "cloud_ssd"}, false), // "cloud_essd" and "local_disk" not supported present in Apsarastack's ecs instance
+				ValidateFunc: validation.StringInSlice([]string{"all", "cloud", "ephemeral_ssd", "cloud_efficiency", "cloud_ssd"}, false),
 			},
 			"system_disk_size": {
 				Type:     schema.TypeString,
@@ -190,11 +190,10 @@ func resourceApsaraStackInstance() *schema.Resource {
 				},
 			},
 
-			//subnet_id and vswitch_id both exists, cause compatible old version, and aws habit.
 			"subnet_id": {
 				Type:          schema.TypeString,
 				Optional:      true,
-				Computed:      true, //add this schema cause subnet_id not used enter parameter, will different, so will be ForceNew
+				Computed:      true,
 				ConflictsWith: []string{"vswitch_id"},
 			},
 
@@ -257,15 +256,6 @@ func resourceApsaraStackInstance() *schema.Resource {
 func resourceApsaraStackInstanceCreate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*connectivity.ApsaraStackClient)
 	ecsService := EcsService{client}
-
-	// Ensure instance_type is valid
-	//zoneId, validZones, requestId, err := ecsService.DescribeAvailableResources(d, meta, InstanceTypeResource)
-	//if err != nil {
-	//	return WrapError(err)
-	//}
-	//if err := ecsService.InstanceTypeValidation(d.Get("instance_type").(string), zoneId, validZones); err != nil {
-	//	return WrapError(Error("%s. RequestId: %s", err, requestId))
-	//}
 
 	request, err := buildApsaraStackInstanceArgs(d, meta)
 	if err != nil {
@@ -1121,7 +1111,6 @@ func modifyInstanceNetworkSpec(d *schema.ResourceData, meta interface{}) error {
 			}
 
 			if instance.InternetMaxBandwidthOut == d.Get("internet_max_bandwidth_out").(int) &&
-				//instance.InternetChargeType == d.Get("internet_charge_type").(string) &&
 				instance.InternetMaxBandwidthIn == d.Get("internet_max_bandwidth_in").(int) {
 				break
 			}
