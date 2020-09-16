@@ -112,10 +112,10 @@ func Provider() terraform.ResourceProvider {
 			},
 		},
 		DataSourcesMap: map[string]*schema.Resource{
-			"apsarastack_ess_scaling_configurations": dataSourceApsaraStackEssScalingConfigurations(),
+			"apsarastack_ess_scalingrules": dataSourceApsaraStackEssScalingRules(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
-			"apsarastack_ess_scaling_configuration": resourceApsaraStackEssScalingConfiguration(),
+			"apsarastack_ess_scalingrule": resourceApsaraStackEssScalingRule(),
 		},
 		ConfigureFunc: providerConfigure,
 	}
