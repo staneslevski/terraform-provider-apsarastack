@@ -1,16 +1,14 @@
 package connectivity
 
 import (
+	"log"
+
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/endpoints"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/adb"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/bssopenapi"
 	cdn_new "github.com/aliyun/alibaba-cloud-sdk-go/services/cdn"
-	"github.com/aliyun/alibaba-cloud-sdk-go/services/ess"
-	"github.com/aliyun/alibaba-cloud-sdk-go/services/location"
-	"github.com/aliyun/alibaba-cloud-sdk-go/services/slb"
-	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/dds"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/elasticsearch"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ess"
@@ -18,14 +16,14 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/hbase"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/location"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/polardb"
-	"github.com/aliyun/alibaba-cloud-sdk-go/services/r-kvstore"
+	"github.com/aliyun/alibaba-cloud-sdk-go/services/r_kvstore"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/rds"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/slb"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/sts"
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"github.com/aliyun/fc-go-sdk"
-	"log"
 
+	officalCS "github.com/aliyun/alibaba-cloud-sdk-go/services/cs"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/kms"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ram"
@@ -74,6 +72,7 @@ type ApsaraStackClient struct {
 	rkvconn           *r_kvstore.Client
 	fcconn            *fc.Client
 	ddsconn           *dds.Client
+	officalCSConn     *officalCS.Client
 }
 
 const (
@@ -745,34 +744,6 @@ func (client *ApsaraStackClient) WithRamClient(do func(*ram.Client) (interface{}
 	}
 
 	return do(client.ramconn)
-}
-
-func (client *ApsaraStackClient) WithRdsClient(do func(*rds.Client) (interface{}, error)) (interface{}, error) {
-	// Initialize the RDS client if necessary
-	if client.rdsconn == nil {
-		endpoint := client.config.RdsEndpoint
-		if endpoint == "" {
-			endpoint = loadEndpoint(client.config.RegionId, RDSCode)
-		}
-		if endpoint != "" {
-			endpoints.AddEndpointMapping(client.config.RegionId, string(RDSCode), endpoint)
-		}
-		rdsconn, err := rds.NewClientWithOptions(client.config.RegionId, client.getSdkConfig(), client.config.getAuthCredential(true))
-		if err != nil {
-			return nil, fmt.Errorf("unable to initialize the RDS client: %#v", err)
-		}
-
-		rdsconn.AppendUserAgent(Terraform, terraformVersion)
-		rdsconn.AppendUserAgent(Provider, providerVersion)
-		rdsconn.AppendUserAgent(Module, client.config.ConfigurationSource)
-		rdsconn.SetHTTPSInsecure(client.config.Insecure)
-		if client.config.Proxy != "" {
-			rdsconn.SetHttpsProxy(client.config.Proxy)
-		}
-		client.rdsconn = rdsconn
-	}
-
-	return do(client.rdsconn)
 }
 
 func (client *ApsaraStackClient) WithCdnClient_new(do func(*cdn_new.Client) (interface{}, error)) (interface{}, error) {
