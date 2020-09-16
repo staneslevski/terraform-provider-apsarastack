@@ -111,11 +111,10 @@ func Provider() terraform.ResourceProvider {
 				Description: descriptions["domain"],
 			},
 		},
-		DataSourcesMap: map[string]*schema.Resource{
-			"apsarastack_vswitches": dataSourceApsaraStackVSwitches(),
-		},
+		DataSourcesMap: map[string]*schema.Resource{},
 		ResourcesMap: map[string]*schema.Resource{
-			"apsarastack_vswitch": resourceApsaraStackSwitch(),
+			"apsarastack_route_table":            resourceApsaraStackRouteTable(),
+			"apsarastack_route_table_attachment": resourceApsaraStackRouteTableAttachment(),
 		},
 		ConfigureFunc: providerConfigure,
 	}

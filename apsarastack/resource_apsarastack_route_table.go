@@ -9,10 +9,10 @@ import (
 
 func resourceApsaraStackRouteTable() *schema.Resource {
 	return &schema.Resource{
-		Create: resourceAliyunRouteTableCreate,
-		Read:   resourceAliyunRouteTableRead,
-		Update: resourceAliyunRouteTableUpdate,
-		Delete: resourceAliyunRouteTableDelete,
+		Create: resourceApsaraStackRouteTableCreate,
+		Read:   resourceApsaraStackRouteTableRead,
+		Update: resourceApsaraStackRouteTableUpdate,
+		Delete: resourceApsaraStackRouteTableDelete,
 		Importer: &schema.ResourceImporter{
 			State: schema.ImportStatePassthrough,
 		},
@@ -39,7 +39,7 @@ func resourceApsaraStackRouteTable() *schema.Resource {
 	}
 }
 
-func resourceAliyunRouteTableCreate(d *schema.ResourceData, meta interface{}) error {
+func resourceApsaraStackRouteTableCreate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*connectivity.ApsaraStackClient)
 	vpcService := VpcService{client}
 
@@ -65,10 +65,10 @@ func resourceAliyunRouteTableCreate(d *schema.ResourceData, meta interface{}) er
 		return WrapError(err)
 	}
 
-	return resourceAliyunRouteTableUpdate(d, meta)
+	return resourceApsaraStackRouteTableUpdate(d, meta)
 }
 
-func resourceAliyunRouteTableRead(d *schema.ResourceData, meta interface{}) error {
+func resourceApsaraStackRouteTableRead(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*connectivity.ApsaraStackClient)
 	vpcService := VpcService{client}
 	object, err := vpcService.DescribeRouteTable(d.Id())
@@ -86,7 +86,7 @@ func resourceAliyunRouteTableRead(d *schema.ResourceData, meta interface{}) erro
 	return nil
 }
 
-func resourceAliyunRouteTableUpdate(d *schema.ResourceData, meta interface{}) error {
+func resourceApsaraStackRouteTableUpdate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*connectivity.ApsaraStackClient)
 	vpcService := VpcService{client}
 	if err := vpcService.setInstanceTags(d, TagResourceRouteTable); err != nil {
@@ -94,7 +94,7 @@ func resourceAliyunRouteTableUpdate(d *schema.ResourceData, meta interface{}) er
 	}
 	if d.IsNewResource() {
 		d.Partial(false)
-		return resourceAliyunRouteTableRead(d, meta)
+		return resourceApsaraStackRouteTableRead(d, meta)
 	}
 	request := vpc.CreateModifyRouteTableAttributesRequest()
 	request.RegionId = client.RegionId
@@ -116,10 +116,10 @@ func resourceAliyunRouteTableUpdate(d *schema.ResourceData, meta interface{}) er
 	}
 	addDebug(request.GetActionName(), raw, request.RpcRequest, request)
 
-	return resourceAliyunRouteTableRead(d, meta)
+	return resourceApsaraStackRouteTableRead(d, meta)
 }
 
-func resourceAliyunRouteTableDelete(d *schema.ResourceData, meta interface{}) error {
+func resourceApsaraStackRouteTableDelete(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*connectivity.ApsaraStackClient)
 	routeTableService := VpcService{client}
 	request := vpc.CreateDeleteRouteTableRequest()
