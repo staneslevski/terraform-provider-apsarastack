@@ -112,11 +112,10 @@ func Provider() terraform.ResourceProvider {
 			},
 		},
 		DataSourcesMap: map[string]*schema.Resource{
-			"apsarastack_ess_scheduled_tasks": dataSourceApsaraStackEssScheduledTasks(),
+			"apsarastack_db_zones": dataSourceApsaraStackDBZones(),
+			"apsarastack_zones":    dataSourceApsaraStackZones(),
 		},
-		ResourcesMap: map[string]*schema.Resource{
-			"apsarastack_ess_scheduled_task": resourceApsaraStackEssScheduledTask(),
-		},
+		ResourcesMap:  map[string]*schema.Resource{},
 		ConfigureFunc: providerConfigure,
 	}
 }

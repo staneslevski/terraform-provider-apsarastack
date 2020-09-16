@@ -625,3 +625,15 @@ func zoneIdsDescriptionAttributes(d *schema.ResourceData, zones []string) error 
 
 	return nil
 }
+
+func splitMultiZoneId(id string) (ids []string) {
+	if !(strings.Contains(id, MULTI_IZ_SYMBOL) || strings.Contains(id, "(")) {
+		return
+	}
+	firstIndex := strings.Index(id, MULTI_IZ_SYMBOL)
+	secondIndex := strings.Index(id, "(")
+	for _, p := range strings.Split(id[secondIndex+1:len(id)-1], COMMA_SEPARATED) {
+		ids = append(ids, id[:firstIndex]+string(p))
+	}
+	return
+}
