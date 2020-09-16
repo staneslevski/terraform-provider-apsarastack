@@ -112,11 +112,9 @@ func dataSourceApsaraStackVSwitches() *schema.Resource {
 }
 func dataSourceApsaraStackVSwitchesRead(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*connectivity.ApsaraStackClient)
-	//	vpcService := VpcService{client}
 
 	request := vpc.CreateDescribeVSwitchesRequest()
 	request.RegionId = string(client.Region)
-	//request.ResourceGroupId = d.Get("resource_group_id").(string)
 	// API DescribeVSwitches has some limitations
 	// If there is no vpc_id, setting PageSizeSmall can avoid ServiceUnavailable Error
 	request.PageSize = requests.NewInteger(PageSizeSmall)
@@ -182,15 +180,6 @@ func dataSourceApsaraStackVSwitchesRead(d *schema.ResourceData, meta interface{}
 					continue
 				}
 			}
-			/*if value, ok := d.GetOk("tags"); ok && len(value.(map[string]interface{})) > 0 {
-				tags, err := vpcService.DescribeTags(vsw.VSwitchId, value.(map[string]interface{}), TagResourceVSwitch)
-				if err != nil {
-					return WrapError(err)
-				}
-				if len(tags) < 1 {
-					continue
-				}
-			}*/
 			allVSwitches = append(allVSwitches, vsw)
 		}
 

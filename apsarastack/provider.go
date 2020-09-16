@@ -112,10 +112,11 @@ func Provider() terraform.ResourceProvider {
 			},
 		},
 		DataSourcesMap: map[string]*schema.Resource{
-			"apsarastack_vpcs": dataSourceApsaraStackVpcs(),
+			"apsarastack_vswitches": dataSourceApsaraStackVSwitches(),
 		},
-		ResourcesMap: map[string]*schema.Resource{},
-
+		ResourcesMap: map[string]*schema.Resource{
+			"apsarastack_vswitch": resourceApsaraStackSwitch(),
+		},
 		ConfigureFunc: providerConfigure,
 	}
 }
