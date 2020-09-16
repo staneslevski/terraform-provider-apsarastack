@@ -112,10 +112,10 @@ func Provider() terraform.ResourceProvider {
 			},
 		},
 		DataSourcesMap: map[string]*schema.Resource{
-			"apsarastack_slb_backend_servers": dataSourceApsaraStackSlbBackendServers(),
+			"apsarastack_ess_scaling_configurations": dataSourceApsaraStackEssScalingConfigurations(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
-			"apsarastack_slb_backend_server": resourceApsaraStackSlbBackendServer(),
+			"apsarastack_ess_scaling_configuration": resourceApsaraStackEssScalingConfiguration(),
 		},
 		ConfigureFunc: providerConfigure,
 	}
