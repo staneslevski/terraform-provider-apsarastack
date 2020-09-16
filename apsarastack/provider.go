@@ -112,13 +112,9 @@ func Provider() terraform.ResourceProvider {
 			},
 		},
 		DataSourcesMap: map[string]*schema.Resource{
-			"apsarastack_images": dataSourceApsaraStackImages(),
+			"apsarastack_vpcs": dataSourceApsaraStackVpcs(),
 		},
-		ResourcesMap: map[string]*schema.Resource{
-			"apsarastack_image_copy":   resourceApsaraStackImageCopy(),
-			"apsarastack_image_export": resourceApsaraStackImageExport(),
-			"apsarastack_image_import": resourceApsaraStackImageImport(),
-		},
+		ResourcesMap: map[string]*schema.Resource{},
 
 		ConfigureFunc: providerConfigure,
 	}
