@@ -112,10 +112,12 @@ func Provider() terraform.ResourceProvider {
 			},
 		},
 		DataSourcesMap: map[string]*schema.Resource{
-			"apsarastack_key_pairs": dataSourceApsaraStackKeyPairs(),
+			"apsarastack_security_groups":      dataSourceApsaraStackSecurityGroups(),
+			"apsarastack_security_group_rules": dataSourceApsaraStackSecurityGroupRules(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
-			"apsarastack_key_pair": resourceApsaraStackKeyPair(),
+			"apsarastack_security_group":      resourceApsaraStackSecurityGroup(),
+			"apsarastack_security_group_rule": resourceApsaraStackSecurityGroupRule(),
 		},
 
 		ConfigureFunc: providerConfigure,
