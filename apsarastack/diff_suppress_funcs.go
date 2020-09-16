@@ -3,6 +3,7 @@ package apsarastack
 import (
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"strconv"
+	"log"
 	"strings"
 )
 
@@ -21,12 +22,6 @@ func kmsDiffSuppressFunc(k, old, new string, d *schema.ResourceData) bool {
 		return true
 	}
 	return false
-}
-func PostPaidAndRenewDiffSuppressFunc(k, old, new string, d *schema.ResourceData) bool {
-	if strings.ToLower(d.Get("instance_charge_type").(string)) == "prepaid" && d.Get("auto_renew").(bool) {
-		return false
-	}
-	return true
 }
 func slbAclDiffSuppressFunc(k, old, new string, d *schema.ResourceData) bool {
 	if status, ok := d.GetOk("acl_status"); ok && status.(string) == string(OnFlag) {
@@ -218,4 +213,35 @@ func archiveBackupPeriodDiffSuppressFunc(k, old, new string, d *schema.ResourceD
 	}
 
 	return true
+}
+
+func csForceUpdateSuppressFunc(k, old, new string, d *schema.ResourceData) bool {
+	// many cs args are not returning from the server
+	// if this is a new resource, allow the diff
+	// args with this suppress func will always suppress the diff, unless user specified force_update
+	log.Printf("key %s, old %s, new %s, isnew %v, id %s", k, old, new, d.IsNewResource(), d.Id())
+	return !(d.Id() == "") && !d.Get("force_update").(bool)
+}
+
+func csKubernetesMasterPostPaidDiffSuppressFunc(k, old, new string, d *schema.ResourceData) bool {
+	return d.Get("master_instance_charge_type").(string) == "PostPaid" || !(d.Id() == "") && !d.Get("force_update").(bool)
+}
+
+func workerDataDiskSizeSuppressFunc(k, old, new string, d *schema.ResourceData) bool {
+	_, ok := d.GetOk("worker_data_disk_category")
+	return !ok || !(d.Id() == "") && !d.Get("force_update").(bool)
+}
+
+func csKubernetesWorkerPostPaidDiffSuppressFunc(k, old, new string, d *schema.ResourceData) bool {
+	return d.Get("worker_instance_charge_type").(string) == "PostPaid" || !(d.Id() == "") && !d.Get("force_update").(bool)
+}
+
+func imageIdSuppressFunc(k, old, new string, d *schema.ResourceData) bool {
+	// setting image_id is not recommended, but is needed by some users.
+	// when image_id is left blank, server will set a random default to it, we only know the default value after creation.
+	// we suppress diff here to prevent unintentional force new action.
+
+	// if we want to change cluster's image_id to default, we have to find out what the default image_id is,
+	// then fill that image_id in this field.
+	return new == "" || !(d.Id() == "") && !d.Get("force_update").(bool)
 }

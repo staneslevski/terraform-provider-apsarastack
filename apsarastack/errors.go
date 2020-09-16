@@ -219,16 +219,8 @@ func GetTimeoutMessage(product, status string) string {
 type ErrorSource string
 
 const (
-	ApsaraStackSdkGoERROR      = ErrorSource("[SDK alibaba-cloud-sdk-go ERROR]")
-	ApsaraStackLogGoSdkERROR   = ErrorSource("[SDK aliyun-log-go-sdk ERROR]")
-	ApsaraStackDatahubSdkGo    = ErrorSource("[SDK aliyun-datahub-sdk-go ERROR]")
-	ApsaraStackMaxComputeSdkGo = ErrorSource("[SDK aliyun-maxcompute-sdk-go ERROR]")
-	ApsaraStackOssGoSdk        = ErrorSource("[SDK aliyun-oss-go-sdk ERROR]")
-	FcGoSdk                    = ErrorSource("[SDK fc-go-sdk ERROR]")
-	DenverdinoApsaraStackgo    = ErrorSource("[SDK denverdino/aliyungo ERROR]")
-	ApsaraStackTablestoreGoSdk = ErrorSource("[SDK aliyun-tablestore-go-sdk ERROR]")
+	psaraStackTablestoreGoSdk = ErrorSource("[SDK aliyun-tablestore-go-sdk ERROR]")
 	ApsaraStackMnsERROR        = ErrorSource("[SDK ali_mns ERROR]")
-	ProviderERROR              = ErrorSource("[Provider ERROR]")
 	ApsaraStackSdkGoERROR = ErrorSource("[SDK alibaba-cloud-sdk-go ERROR]")
 	ProviderERROR         = ErrorSource("[Provider ERROR]")
 	ApsaraStackOssGoSdk   = ErrorSource("[SDK aliyun-oss-go-sdk ERROR]")
