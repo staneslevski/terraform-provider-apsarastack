@@ -112,10 +112,10 @@ func Provider() terraform.ResourceProvider {
 			},
 		},
 		DataSourcesMap: map[string]*schema.Resource{
-			"apsarastack_instances": dataSourceApsaraStackInstances(),
+			"apsarastack_key_pairs": dataSourceApsaraStackKeyPairs(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
-			"apsarastack_instance": resourceApsaraStackInstance(),
+			"apsarastack_key_pair": resourceApsaraStackKeyPair(),
 		},
 
 		ConfigureFunc: providerConfigure,
