@@ -64,7 +64,7 @@ resource "apsarastack_common_bandwidth_package" "default" {
 data "apsarastack_common_bandwidth_packages" "default"  {
   %s
 }
-`, rand, os.Getenv("APSARASTaCK_RESOURCE_GROUP_ID"), strings.Join(pairs, "\n  "))
+`, rand, os.Getenv("APSARASTACK_RESOURCE_GROUP_ID"), strings.Join(pairs, "\n  "))
 	return config
 }
 
