@@ -111,10 +111,12 @@ func Provider() terraform.ResourceProvider {
 				Description: descriptions["domain"],
 			},
 		},
-		DataSourcesMap: map[string]*schema.Resource{},
+		DataSourcesMap: map[string]*schema.Resource{
+			"apsarastack_snat_entries": dataSourceApsaraStackSnatEntries(),
+		},
 		ResourcesMap: map[string]*schema.Resource{
-			"apsarastack_route_table":            resourceApsaraStackRouteTable(),
-			"apsarastack_route_table_attachment": resourceApsaraStackRouteTableAttachment(),
+			"apsarastack_nat_gateway": resourceApsaraStackNatGateway(),
+			"apsarastack_snat_entry":  resourceApsaraStackSnatEntry(),
 		},
 		ConfigureFunc: providerConfigure,
 	}
