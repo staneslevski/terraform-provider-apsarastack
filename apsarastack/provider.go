@@ -111,13 +111,9 @@ func Provider() terraform.ResourceProvider {
 				Description: descriptions["domain"],
 			},
 		},
-		DataSourcesMap: map[string]*schema.Resource{
-			"apsarastack_security_groups":      dataSourceApsaraStackSecurityGroups(),
-			"apsarastack_security_group_rules": dataSourceApsaraStackSecurityGroupRules(),
-		},
+		DataSourcesMap: map[string]*schema.Resource{},
 		ResourcesMap: map[string]*schema.Resource{
-			"apsarastack_security_group":      resourceApsaraStackSecurityGroup(),
-			"apsarastack_security_group_rule": resourceApsaraStackSecurityGroupRule(),
+			"apsarastack_snapshot_policy": resourceApsaraStackSnapshotPolicy(),
 		},
 
 		ConfigureFunc: providerConfigure,
