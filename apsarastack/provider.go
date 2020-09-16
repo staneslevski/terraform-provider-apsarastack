@@ -113,7 +113,7 @@ func Provider() terraform.ResourceProvider {
 		},
 		DataSourcesMap: map[string]*schema.Resource{},
 		ResourcesMap: map[string]*schema.Resource{
-			"apsarastack_db_backup_policy": resourceApsaraStackDBBackupPolicy(),
+			"apsarastack_db_read_write_splitting_connection": resourceApsaraStackDBReadWriteSplittingConnection(),
 		},
 		ConfigureFunc: providerConfigure,
 	}
