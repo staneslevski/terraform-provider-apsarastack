@@ -29,6 +29,7 @@ const (
 	RamInstanceNotFound        = "Forbidden.InstanceNotFound"
 	ApsaraStackGoClientFailure = "ApsaraStackGoClientFailure"
 	DenverdinoApsaraStackgo    = ErrorSource("[SDK denverdino/aliyungo ERROR]")
+	ProviderERROR              = ErrorSource("[Provider ERROR]")
 )
 
 var SlbIsBusy = []string{"SystemBusy", "OperationBusy", "ServiceIsStopping", "BackendServer.configuring", "ServiceIsConfiguring"}
@@ -38,6 +39,7 @@ var NetworkInterfaceInvalidOperations = []string{"InvalidOperation.InvalidEniSta
 var SnapshotInvalidOperations = []string{"OperationConflict", "ServiceUnavailable", "InternalError", "SnapshotCreatedDisk", "SnapshotCreatedImage"}
 var SnapshotPolicyInvalidOperations = []string{"OperationConflict", "ServiceUnavailable", "InternalError", "SnapshotCreatedDisk", "SnapshotCreatedImage"}
 var DiskNotSupportOnlineChangeErrors = []string{"InvalidDiskCategory.NotSupported", "InvalidRegion.NotSupport", "IncorrectInstanceStatus", "IncorrectDiskStatus", "InvalidOperation.InstanceTypeNotSupport"}
+var DBReadInstanceNotReadyStatus = []string{"OperationDenied.ReadDBInstanceStatus", "OperationDenied.MasterDBInstanceState", "ReadDBInstance.Mismatch"}
 
 // An Error represents a custom error for Terraform failure response
 type ProviderError struct {
@@ -219,7 +221,6 @@ type ErrorSource string
 
 const (
 	ApsaraStackSdkGoERROR = ErrorSource("[SDK alibaba-cloud-sdk-go ERROR]")
-	ProviderERROR         = ErrorSource("[Provider ERROR]")
 	ApsaraStackOssGoSdk   = ErrorSource("[SDK aliyun-oss-go-sdk ERROR]")
 )
 
