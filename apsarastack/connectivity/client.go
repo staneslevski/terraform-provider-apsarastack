@@ -127,10 +127,6 @@ func (client *ApsaraStackClient) WithEcsClient(do func(*ecs.Client) (interface{}
 		if err != nil {
 			return nil, fmt.Errorf("unable to initialize the ECS client: %#v", err)
 		}
-
-		//if _, err := ecsconn.DescribeRegions(ecs.CreateDescribeRegionsRequest()); err != nil {
-		//	return nil, err
-		//}
 		ecsconn.AppendUserAgent(Terraform, terraformVersion)
 		ecsconn.AppendUserAgent(Provider, providerVersion)
 		ecsconn.AppendUserAgent(Module, client.config.ConfigurationSource)
@@ -403,6 +399,64 @@ func (client *ApsaraStackClient) WithVpcClient(do func(*vpc.Client) (interface{}
 
 	return do(client.vpcconn)
 }
+
+func (client *ApsaraStackClient) WithOssClient(do func(*oss.Client) (interface{}, error)) (interface{}, error) {
+	goSdkMutex.Lock()
+	defer goSdkMutex.Unlock()
+
+	// Initialize the OSS client if necessary
+	if client.ossconn == nil {
+		schma := "https"
+		endpoint := client.config.OssEndpoint
+		if endpoint == "" {
+			endpoint = loadEndpoint(client.config.RegionId, OSSCode)
+		}
+		if endpoint == "" {
+			endpointItem, _ := client.describeEndpointForService(strings.ToLower(string(OSSCode)))
+			if endpointItem != nil {
+				if len(endpointItem.Protocols.Protocols) > 0 {
+					// HTTP or HTTPS
+					schma = strings.ToLower(endpointItem.Protocols.Protocols[0])
+					for _, p := range endpointItem.Protocols.Protocols {
+						if strings.ToLower(p) == "https" {
+							schma = strings.ToLower(p)
+							break
+						}
+					}
+				}
+				endpoint = endpointItem.Endpoint
+			} else {
+				endpoint = fmt.Sprintf("oss-%s.aliyuncs.com", client.RegionId)
+			}
+		}
+		if !strings.HasPrefix(endpoint, "http") {
+			endpoint = fmt.Sprintf("%s://%s", schma, endpoint)
+		}
+
+		clientOptions := []oss.ClientOption{oss.UserAgent(client.getUserAgent()),
+			oss.SecurityToken(client.config.SecurityToken)}
+		proxy, err := client.getHttpProxy()
+		if proxy != nil {
+			skip, err := client.skipProxy(endpoint)
+			if err != nil {
+				return nil, err
+			}
+			if !skip {
+				clientOptions = append(clientOptions, oss.Proxy(proxy.String()))
+			}
+		}
+
+		ossconn, err := oss.New(endpoint, client.config.AccessKey, client.config.SecretKey, clientOptions...)
+		if err != nil {
+			return nil, fmt.Errorf("unable to initialize the OSS client: %#v", err)
+		}
+
+		client.ossconn = ossconn
+	}
+
+	return do(client.ossconn)
+}
+
 func (client *ApsaraStackClient) WithSlbClient(do func(*slb.Client) (interface{}, error)) (interface{}, error) {
 	// Initialize the SLB client if necessary
 	if client.slbconn == nil {
@@ -603,6 +657,7 @@ func (client *ApsaraStackClient) skipProxy(endpoint string) (bool, error) {
 	}
 	return false, nil
 }
+
 func (client *ApsaraStackClient) WithKmsClient(do func(*kms.Client) (interface{}, error)) (interface{}, error) {
 	// Initialize the KMS client if necessary
 	if client.kmsconn == nil {
@@ -689,62 +744,6 @@ func (client *ApsaraStackClient) WithBssopenapiClient(do func(*bssopenapi.Client
 
 	return do(client.bssopenapiconn)
 }
-func (client *ApsaraStackClient) WithOssClient(do func(*oss.Client) (interface{}, error)) (interface{}, error) {
-	goSdkMutex.Lock()
-	defer goSdkMutex.Unlock()
-
-	// Initialize the OSS client if necessary
-	if client.ossconn == nil {
-		schma := "https"
-		endpoint := client.config.OssEndpoint
-		if endpoint == "" {
-			endpoint = loadEndpoint(client.config.RegionId, OSSCode)
-		}
-		if endpoint == "" {
-			endpointItem, _ := client.describeEndpointForService(strings.ToLower(string(OSSCode)))
-			if endpointItem != nil {
-				if len(endpointItem.Protocols.Protocols) > 0 {
-					// HTTP or HTTPS
-					schma = strings.ToLower(endpointItem.Protocols.Protocols[0])
-					for _, p := range endpointItem.Protocols.Protocols {
-						if strings.ToLower(p) == "https" {
-							schma = strings.ToLower(p)
-							break
-						}
-					}
-				}
-				endpoint = endpointItem.Endpoint
-			} else {
-				endpoint = fmt.Sprintf("oss-%s.aliyuncs.com", client.RegionId)
-			}
-		}
-		if !strings.HasPrefix(endpoint, "http") {
-			endpoint = fmt.Sprintf("%s://%s", schma, endpoint)
-		}
-
-		clientOptions := []oss.ClientOption{oss.UserAgent(client.getUserAgent()),
-			oss.SecurityToken(client.config.SecurityToken)}
-		proxy, err := client.getHttpProxy()
-		if proxy != nil {
-			skip, err := client.skipProxy(endpoint)
-			if err != nil {
-				return nil, err
-			}
-			if !skip {
-				clientOptions = append(clientOptions, oss.Proxy(proxy.String()))
-			}
-		}
-
-		ossconn, err := oss.New(endpoint, client.config.AccessKey, client.config.SecretKey, clientOptions...)
-		if err != nil {
-			return nil, fmt.Errorf("unable to initialize the OSS client: %#v", err)
-		}
-
-		client.ossconn = ossconn
-	}
-
-	return do(client.ossconn)
-}
 
 func (client *ApsaraStackClient) WithRamClient(do func(*ram.Client) (interface{}, error)) (interface{}, error) {
 	// Initialize the RAM client if necessary
@@ -777,34 +776,6 @@ func (client *ApsaraStackClient) WithRamClient(do func(*ram.Client) (interface{}
 	return do(client.ramconn)
 }
 
-func (client *ApsaraStackClient) WithRdsClient(do func(*rds.Client) (interface{}, error)) (interface{}, error) {
-	// Initialize the RDS client if necessary
-	if client.rdsconn == nil {
-		endpoint := client.config.RdsEndpoint
-		if endpoint == "" {
-			endpoint = loadEndpoint(client.config.RegionId, RDSCode)
-		}
-		if endpoint != "" {
-			endpoints.AddEndpointMapping(client.config.RegionId, string(RDSCode), endpoint)
-		}
-		rdsconn, err := rds.NewClientWithOptions(client.config.RegionId, client.getSdkConfig(), client.config.getAuthCredential(true))
-		if err != nil {
-			return nil, fmt.Errorf("unable to initialize the RDS client: %#v", err)
-		}
-
-		rdsconn.AppendUserAgent(Terraform, terraformVersion)
-		rdsconn.AppendUserAgent(Provider, providerVersion)
-		rdsconn.AppendUserAgent(Module, client.config.ConfigurationSource)
-		rdsconn.SetHTTPSInsecure(client.config.Insecure)
-		if client.config.Proxy != "" {
-			rdsconn.SetHttpsProxy(client.config.Proxy)
-		}
-		client.rdsconn = rdsconn
-	}
-
-	return do(client.rdsconn)
-}
-
 func (client *ApsaraStackClient) WithCdnClient_new(do func(*cdn_new.Client) (interface{}, error)) (interface{}, error) {
 	// Initialize the CDN client if necessary
 	if client.cdnconn_new == nil {
@@ -832,9 +803,11 @@ func (client *ApsaraStackClient) WithCdnClient_new(do func(*cdn_new.Client) (int
 
 	return do(client.cdnconn_new)
 }
+
 func (client *ApsaraStackClient) getUserAgent() string {
 	return fmt.Sprintf("%s/%s %s/%s %s/%s", Terraform, terraformVersion, Provider, providerVersion, Module, client.config.ConfigurationSource)
 }
+
 func (client *ApsaraStackClient) WithCsClient(do func(*cs.Client) (interface{}, error)) (interface{}, error) {
 	goSdkMutex.Lock()
 	defer goSdkMutex.Unlock()

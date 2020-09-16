@@ -2,6 +2,8 @@ package connectivity
 
 import (
 	"fmt"
+	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/endpoints"
+	"github.com/aliyun/alibaba-cloud-sdk-go/services/rds"
 	"log"
 
 	"encoding/json"
@@ -17,7 +19,7 @@ import (
 
 var securityCredURL = "http://100.100.100.200/latest/meta-data/ram/security-credentials/"
 
-// Config of apsarastack
+// Config of aliyun
 type Config struct {
 	AccessKey       string
 	SecretKey       string
@@ -113,7 +115,30 @@ func (c *Config) validateRegion() error {
 		}
 	}
 
-	return fmt.Errorf("Invalid ApsaraStack Cloud region: %s", c.RegionId)
+	return fmt.Errorf("Invalid Apsara Stack Cloud region: %s", c.RegionId)
+}
+func (client *ApsaraStackClient) WithRdsClient(do func(*rds.Client) (interface{}, error)) (interface{}, error) {
+	// Initialize the RDS client if necessary
+	if client.rdsconn == nil {
+		endpoint := client.config.RdsEndpoint
+		if endpoint == "" {
+			endpoint = loadEndpoint(client.config.RegionId, RDSCode)
+		}
+		if endpoint != "" {
+			endpoints.AddEndpointMapping(client.config.RegionId, string(RDSCode), endpoint)
+		}
+		rdsconn, err := rds.NewClientWithOptions(client.config.RegionId, client.getSdkConfig(), client.config.getAuthCredential(true))
+		if err != nil {
+			return nil, fmt.Errorf("unable to initialize the RDS client: %#v", err)
+		}
+
+		rdsconn.AppendUserAgent(Terraform, terraformVersion)
+		rdsconn.AppendUserAgent(Provider, providerVersion)
+		rdsconn.AppendUserAgent(Module, client.config.ConfigurationSource)
+		client.rdsconn = rdsconn
+	}
+
+	return do(client.rdsconn)
 }
 
 func (c *Config) getAuthCredential(stsSupported bool) auth.Credential {
@@ -140,7 +165,7 @@ func (c *Config) getAuthCredential(stsSupported bool) auth.Credential {
 // Actually, the job should be done by sdk, but currently not all resources and products support alibaba-cloud-sdk-go,
 // and their go sdk does support ecs role name.
 // This method is a temporary solution and it should be removed after all go sdk support ecs role name
-
+// The related PR: https://github.com/aliyun/terraform-provider-apsarastack/pull/731
 func (c *Config) getAuthCredentialByEcsRoleName() (accessKey, secretKey, token string, err error) {
 	if c.AccessKey != "" {
 		return c.AccessKey, c.SecretKey, c.SecurityToken, nil
