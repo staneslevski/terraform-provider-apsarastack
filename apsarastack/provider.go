@@ -113,8 +113,8 @@ func Provider() terraform.ResourceProvider {
 		},
 		DataSourcesMap: map[string]*schema.Resource{},
 		ResourcesMap: map[string]*schema.Resource{
-			"apsarastack_db_database":   resourceApsaraStackDBDatabase(),
-			"apsarastack_db_connection": resourceApsaraStackDBConnection(),
+			"apsarastack_db_account":           resourceApsaraStackDBAccount(),
+			"apsarastack_db_account_privilege": resourceApsaraStackDBAccountPrivilege(),
 		},
 		ConfigureFunc: providerConfigure,
 	}
