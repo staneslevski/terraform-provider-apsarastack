@@ -112,11 +112,10 @@ func Provider() terraform.ResourceProvider {
 			},
 		},
 		DataSourcesMap: map[string]*schema.Resource{
-			"apsarastack_ess_scaling_groups": dataSourceApsaraStackEssScalingGroups(),
+			"apsarastack_ess_scheduled_tasks": dataSourceApsaraStackEssScheduledTasks(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
-			"apsarastack_ess_scaling_group":               resourceApsaraStackEssScalingGroup(),
-			"apsarastack_ess_scalinggroup_vserver_groups": resourceApsaraStackEssScalingGroupVserverGroups(),
+			"apsarastack_ess_scheduled_task": resourceApsaraStackEssScheduledTask(),
 		},
 		ConfigureFunc: providerConfigure,
 	}
