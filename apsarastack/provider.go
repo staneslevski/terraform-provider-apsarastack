@@ -152,6 +152,13 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_ess_scaling_groups":             dataSourceApsaraStackEssScalingGroups(),
 			"apsarastack_zones":                          dataSourceApsaraStackZones(),
       "apsarastack_ess_scheduled_tasks":            dataSourceApsaraStackEssScheduledTasks(),
+
+			"apsarastack_cr_ee_instances":  dataSourceApsaraStackCrEEInstances(),
+			"apsarastack_cr_ee_namespaces": dataSourceApsaraStackCrEENamespaces(),
+			"apsarastack_cr_ee_repos":      dataSourceApsaraStackCrEERepos(),
+			"apsarastack_cr_ee_sync_rules": dataSourceApsaraStackCrEESyncRules(),
+			"apsarastack_cr_namespaces":    dataSourceApsaraStackCRNamespaces(),
+			"apsarastack_cr_repos":         dataSourceApsaraStackCRRepos(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"apsarastack_disk":                                resourceApsaraStackDisk(),
@@ -198,8 +205,14 @@ func Provider() terraform.ResourceProvider {
 			"apsarastack_oss_bucket_object":                   resourceApsaraStackOssBucketObject(),
 			"apsarastack_ess_scaling_group":                   resourceApsaraStackEssScalingGroup(),
 			"apsarastack_ess_scalinggroup_vserver_groups":     resourceApsaraStackEssScalingGroupVserverGroups(),
+			"apsarastack_ess_scheduled_task":                  resourceApsaraStackEssScheduledTask(),
 			"apsarastack_slb_backend_server":                  resourceApsaraStackSlbBackendServer(),
-      "apsarastack_ess_scheduled_task":                  resourceApsaraStackEssScheduledTask(),
+
+			"apsarastack_cr_ee_namespace": resourceApsaraStackCrEENamespace(),
+			"apsarastack_cr_ee_repo":      resourceApsaraStackCrEERepo(),
+			"apsarastack_cr_ee_sync_rule": resourceApsaraStackCrEESyncRule(),
+			"apsarastack_cr_namespace":    resourceApsaraStackCRNamespace(),
+			"apsarastack_cr_repo":         resourceApsaraStackCRRepo(),
 		},
 
 		ConfigureFunc: providerConfigure,
