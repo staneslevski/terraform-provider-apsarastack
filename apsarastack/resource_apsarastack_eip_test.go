@@ -358,6 +358,7 @@ resource "apsarastack_eip" "default" {
 	bandwidth = "5"
 }
 `)
+
 }
 
 var testAccCheckEipCheckMap = map[string]string{

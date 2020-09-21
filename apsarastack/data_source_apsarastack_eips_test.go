@@ -38,7 +38,7 @@ func TestAccApsaraStackEipsDataSourceBasic(t *testing.T) {
 		}),
 	}
 
-	dnsEipsCheckInfo.dataSourceTestCheck(t, rand, idsConf, ipsConf, allConf) //tagsConf, allConf)
+	dnsEipsCheckInfo.dataSourceTestCheck(t, rand, idsConf, ipsConf, allConf)
 
 }
 
@@ -49,7 +49,6 @@ func testAccCheckApsaraStackEipsDataSourceConfig(rand int, attrMap map[string]st
 	}
 
 	return fmt.Sprintf(`
-
 resource "apsarastack_eip" "default" {
   name = "tf-testAccCheckApsarastackEipsDataSourceConfig%d"
   count = 2
@@ -71,8 +70,6 @@ var existEipsMapFunc = func(rand int) map[string]string {
 		"eips.0.bandwidth":     "5",
 		"eips.0.instance_id":   "",
 		"eips.0.instance_type": "",
-		//"eips.0.internet_charge_type": string(PayByTraffic),
-		//"eips.0.creation_time":        CHECKSET,
 	}
 }
 

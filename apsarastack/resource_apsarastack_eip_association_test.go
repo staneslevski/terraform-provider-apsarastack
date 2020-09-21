@@ -147,57 +147,47 @@ func testAccEIPAssociationConfigBaisc(rand int) string {
 	return fmt.Sprintf(`
 data "apsarastack_zones" "default" {
 }
-
 data "apsarastack_instance_types" "default" {
  	availability_zone = "${data.apsarastack_zones.default.zones.0.id}"
 }
-
 data "apsarastack_images" "default" {
 	name_regex = "^ubuntu_18.*64"
 	most_recent = true
 	owners = "system"
 }
-
 variable "name" {
 	default = "tf-testAccEipAssociation%d"
 }
-
 resource "apsarastack_vpc" "default" {
   name = "${var.name}"
   cidr_block = "10.1.0.0/21"
 }
-
 resource "apsarastack_vswitch" "default" {
   vpc_id = "${apsarastack_vpc.default.id}"
   cidr_block = "10.1.1.0/24"
   availability_zone = "${data.apsarastack_zones.default.zones.0.id}"
   name = "${var.name}"
 }
-
 resource "apsarastack_security_group" "default" {
   name = "${var.name}"
   description = "New security group"
   vpc_id = "${apsarastack_vpc.default.id}"
 }
-
 resource "apsarastack_instance" "default" {
   vswitch_id = "${apsarastack_vswitch.default.id}"
   image_id = "${data.apsarastack_images.default.images.0.id}"
   availability_zone = "${data.apsarastack_zones.default.zones.0.id}"
   system_disk_category = "cloud_ssd"
   instance_type = "${data.apsarastack_instance_types.default.instance_types.0.id}"
-
   security_groups = ["${apsarastack_security_group.default.id}"]
   instance_name = "${var.name}"
   tags = {
     Name = "TerraformTest-instance"
   }
 }
-
 resource "apsarastack_eip" "default" {
 	name = "${var.name}"
 }
-
 resource "apsarastack_eip_association" "default" {
   allocation_id = "${apsarastack_eip.default.id}"
   instance_id = "${apsarastack_instance.default.id}"
@@ -209,43 +199,35 @@ func testAccEIPAssociationConfigMulti(rand int) string {
 	return fmt.Sprintf(`
 data "apsarastack_zones" "default" {
 }
-
 data "apsarastack_instance_types" "default" {
  	availability_zone = "${data.apsarastack_zones.default.zones.0.id}"
 }
-
 data "apsarastack_images" "default" {
 	name_regex = "^ubuntu_18.*64"
 	most_recent = true
 	owners = "system"
 }
-
 variable "name" {
 	default = "tf-testAccEipAssociation%d"
 }
-
 variable "number" {
 		default = "2"
 }
-
 resource "apsarastack_vpc" "default" {
   name = "${var.name}"
   cidr_block = "10.1.0.0/21"
 }
-
 resource "apsarastack_vswitch" "default" {
   vpc_id = "${apsarastack_vpc.default.id}"
   cidr_block = "10.1.1.0/24"
   availability_zone = "${data.apsarastack_zones.default.zones.0.id}"
   name = "${var.name}"
 }
-
 resource "apsarastack_security_group" "default" {
   name = "${var.name}"
   description = "New security group"
   vpc_id = "${apsarastack_vpc.default.id}"
 }
-
 resource "apsarastack_instance" "default" {
   count = "${var.number}"
   vswitch_id = "${apsarastack_vswitch.default.id}"
@@ -253,19 +235,16 @@ resource "apsarastack_instance" "default" {
   availability_zone = "${data.apsarastack_zones.default.zones.0.id}"
   system_disk_category = "cloud_ssd"
   instance_type = "${data.apsarastack_instance_types.default.instance_types.0.id}"
-
   security_groups = ["${apsarastack_security_group.default.id}"]
   instance_name = "${var.name}"
   tags = {
     Name = "TerraformTest-instance"
   }
 }
-
 resource "apsarastack_eip" "default" {
 	count = "${var.number}"
 	name = "${var.name}"
 }
-
 resource "apsarastack_eip_association" "default" {
   count = "${var.number}"
   allocation_id = "${element(apsarastack_eip.default.*.id,count.index)}"
@@ -279,39 +258,32 @@ func testAccEIPAssociationConfigEni(rand int) string {
 variable "name" {
   default = "tf-testAccEipAssociation%d"
 }
-
 resource "apsarastack_vpc" "default" {
     name = "${var.name}"
     cidr_block = "192.168.0.0/24"
 }
-
 data "apsarastack_zones" "default" {
     available_resource_creation= "VSwitch"
 }
-
 resource "apsarastack_vswitch" "default" {
     name = "${var.name}"
     cidr_block = "192.168.0.0/24"
     availability_zone = "${data.apsarastack_zones.default.zones.0.id}"
     vpc_id = "${apsarastack_vpc.default.id}"
 }
-
 resource "apsarastack_security_group" "default" {
     name = "${var.name}"
     vpc_id = "${apsarastack_vpc.default.id}"
 }
-
 resource "apsarastack_network_interface" "default" {
 	name = "${var.name}"
     vswitch_id = "${apsarastack_vswitch.default.id}"
 	security_groups = [ "${apsarastack_security_group.default.id}" ]
 	private_ip = "192.168.0.2"
 }
-
 resource "apsarastack_eip" "default" {
 	name = "${var.name}"
 }
-
 resource "apsarastack_eip_association" "default" {
   allocation_id = "${apsarastack_eip.default.id}"
   instance_id = "${apsarastack_network_interface.default.id}"
