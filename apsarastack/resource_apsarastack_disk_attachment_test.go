@@ -129,7 +129,6 @@ func testAccDiskAttachmentConfig() string {
     data "apsarastack_images" "default" {
 	  # test for windows service
       name_regex  = "^win*"
-
       most_recent = true
       owners      = "system"
     }
@@ -157,22 +156,18 @@ func testAccDiskAttachmentConfig() string {
       	security_group_id = "${apsarastack_security_group.default.id}"
       	cidr_ip = "172.16.0.0/24"
     }	
-
 	variable "name" {
 		default = "tf-testAccEcsDiskAttachmentConfig"
 	}
-
 	resource "apsarastack_disk" "default" {
 	  availability_zone = "${data.apsarastack_instance_types.default.instance_types.0.availability_zones.0}"
 	  size = "50"
 	  name = "${var.name}"
 	  category = "cloud_efficiency"
-
 	  tags = {
 	    Name = "TerraformTest-disk"
 	  }
 	}
-
 	resource "apsarastack_instance" "default" {
 		image_id = "${data.apsarastack_images.default.images.0.id}"
 		availability_zone = "${data.apsarastack_instance_types.default.instance_types.0.availability_zones.0}"
@@ -183,7 +178,6 @@ func testAccDiskAttachmentConfig() string {
 		instance_name = "${var.name}"
 		vswitch_id = "${apsarastack_vswitch.default.id}"
 	}
-
 	resource "apsarastack_disk_attachment" "default" {
 	  disk_id = "${apsarastack_disk.default.id}"
 	  instance_id = "${apsarastack_instance.default.id}"
@@ -199,7 +193,6 @@ func testAccDiskAttachmentConfigResize() string {
     data "apsarastack_images" "default" {
 	  # test for windows service
       name_regex  = "^win*"
-
       most_recent = true
       owners      = "system"
     }
@@ -227,22 +220,18 @@ func testAccDiskAttachmentConfigResize() string {
       	security_group_id = "${apsarastack_security_group.default.id}"
       	cidr_ip = "172.16.0.0/24"
     }	
-
 	variable "name" {
 		default = "tf-testAccEcsDiskAttachmentConfig"
 	}
-
 	resource "apsarastack_disk" "default" {
 	  availability_zone = "${data.apsarastack_instance_types.default.instance_types.0.availability_zones.0}"
 	  size = "70"
 	  name = "${var.name}"
 	  category = "cloud_efficiency"
-
 	  tags = {
 	    Name = "TerraformTest-disk"
 	  }
 	}
-
 	resource "apsarastack_instance" "default" {
 		image_id = "${data.apsarastack_images.default.images.0.id}"
 		availability_zone = "${data.apsarastack_instance_types.default.instance_types.0.availability_zones.0}"
@@ -253,7 +242,6 @@ func testAccDiskAttachmentConfigResize() string {
 		instance_name = "${var.name}"
 		vswitch_id = "${apsarastack_vswitch.default.id}"
 	}
-
 	resource "apsarastack_disk_attachment" "default" {
 	  disk_id = "${apsarastack_disk.default.id}"
 	  instance_id = "${apsarastack_instance.default.id}"
@@ -266,22 +254,18 @@ func testAccMultiDiskAttachmentConfig(common string) string {
 	variable "name" {
 		default = "tf-testAccEcsDiskAttachmentConfig"
 	}
-
 	variable "number" {
 		default = "2"
 	}
-
 	resource "apsarastack_disk" "default" {
 		name = "${var.name}-${count.index}"
 		count = "${var.number}"
 		availability_zone = "${data.apsarastack_instance_types.default.instance_types.0.availability_zones.0}"
 		size = "50"
-
 		tags = {
 			Name = "TerraformTest-disk-${count.index}"
 		}
 	}
-
 	resource "apsarastack_instance" "default" {
 		image_id = "${data.apsarastack_images.default.images.0.id}"
 		availability_zone = "${data.apsarastack_instance_types.default.instance_types.0.availability_zones.0}"
@@ -292,7 +276,6 @@ func testAccMultiDiskAttachmentConfig(common string) string {
 		instance_name = "${var.name}"
 		vswitch_id = "${apsarastack_vswitch.default.id}"
 	}
-
 	resource "apsarastack_disk_attachment" "default" {
 		count = "${var.number}"
 		disk_id     = "${element(apsarastack_disk.default.*.id, count.index)}"
