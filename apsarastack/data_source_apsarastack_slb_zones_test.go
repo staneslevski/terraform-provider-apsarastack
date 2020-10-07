@@ -1,60 +1,34 @@
 package apsarastack
 
 import (
+	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
 	"testing"
-
-	"github.com/hashicorp/terraform-plugin-sdk/helper/acctest"
 )
 
 func TestAccApsaraStackSlbZonesDataSource_basic(t *testing.T) {
-	rand := acctest.RandInt()
-	resourceId := "data.apsarastack_slb_zones.default"
-
-	testAccConfig := dataSourceTestAccConfigFunc(resourceId, "", dataSourceslbZonesConfigDependence)
-
-	addressTypeConfig := dataSourceTestAccConfig{
-		existConfig: testAccConfig(map[string]interface{}{
-			"available_slb_address_type": "Vpc",
-		}),
-	}
-
-	ipVersionConfig := dataSourceTestAccConfig{
-		existConfig: testAccConfig(map[string]interface{}{
-			"available_slb_address_ip_version": "ipv4",
-		}),
-	}
-
-	allConfig := dataSourceTestAccConfig{
-		existConfig: testAccConfig(map[string]interface{}{
-			"available_slb_address_type":       "Vpc",
-			"available_slb_address_ip_version": "ipv4",
-		}),
-	}
-
-	var existSlbZonesMapFunc = func(rand int) map[string]string {
-		return map[string]string{
-			"ids.#":                        CHECKSET,
-			"zones.#":                      CHECKSET,
-			"zones.0.slb_slave_zone_ids.#": CHECKSET,
-		}
-	}
-
-	var fakeSlbZonesMapFunc = func(rand int) map[string]string {
-		return map[string]string{
-			"ids.#":   "0",
-			"zones.#": "0",
-		}
-	}
-
-	var slbZonesCheckInfo = dataSourceAttr{
-		resourceId:   resourceId,
-		existMapFunc: existSlbZonesMapFunc,
-		fakeMapFunc:  fakeSlbZonesMapFunc,
-	}
-
-	slbZonesCheckInfo.dataSourceTestCheck(t, rand, addressTypeConfig, ipVersionConfig, allConfig)
+	resource.Test(t, resource.TestCase{
+		PreCheck: func() {
+			testAccPreCheck(t)
+		},
+		Providers: testAccProviders,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccCheckApsaraStackzones,
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckApsaraStackDataSourceID("data.apsarastack_slb_zones.zone"),
+					resource.TestCheckResourceAttr("data.apsarastack_slb_zones.zone", "zones.#", "0"),
+					resource.TestCheckNoResourceAttr("data.apsarastack_slb_zones.zone", "zones.0.slb_slave_zone_ids"),
+					resource.TestCheckNoResourceAttr("data.apsarastack_slb_zones.zone", "zones.0.local_name"),
+					resource.TestCheckResourceAttrSet("data.apsarastack_slb_zones.default", "ids.#"),
+				),
+			},
+		},
+	})
 }
 
-func dataSourceslbZonesConfigDependence(name string) string {
-	return ""
+const testAccCheckApsaraStackzones = `
+data "apsarastack_instance_types" "zone" {
+enable_details = true
+	
 }
+`
