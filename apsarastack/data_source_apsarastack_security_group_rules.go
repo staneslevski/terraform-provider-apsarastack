@@ -20,9 +20,8 @@ func dataSourceApsaraStackSecurityGroupRules() *schema.Resource {
 				Required: true,
 			},
 			"nic_type": {
-				Type:     schema.TypeString,
-				Optional: true,
-				// must be one of GroupRuleInternet, GroupRuleIntranet
+				Type:         schema.TypeString,
+				Optional:     true,
 				ValidateFunc: validation.StringInSlice([]string{"internet", "intranet"}, false),
 			},
 			"direction": {
@@ -159,7 +158,6 @@ func dataSourceApsaraStackSecurityGroupRulesRead(d *schema.ResourceData, meta in
 				"policy":                     strings.ToLower(string(item.Policy)),
 				"nic_type":                   item.NicType,
 				"direction":                  item.Direction,
-				//"description":                item.Description,//has been removed for Apsarastack
 			}
 
 			pri, err := strconv.Atoi(item.Priority)
