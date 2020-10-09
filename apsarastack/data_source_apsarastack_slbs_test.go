@@ -181,7 +181,6 @@ resource "apsarastack_vswitch" "default" {
 resource "apsarastack_slb" "default" {
   name = "${var.name}"
   vswitch_id = "${apsarastack_vswitch.default.id}"
-  master_zone_id = "${data.apsarastack_zones.default.zones.0.id}"
   tags = {
     tag_a = 1
     tag_b = 2

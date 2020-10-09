@@ -17,7 +17,7 @@ func resourceApsaraStackImageExport() *schema.Resource {
 		Read:   resourceApsaraStackImageExportRead,
 		Delete: resourceApsaraStackImageExportDelete,
 		Timeouts: &schema.ResourceTimeout{
-			Create: schema.DefaultTimeout(20 * time.Minute),
+			Create: schema.DefaultTimeout(25 * time.Minute),
 		},
 		Schema: map[string]*schema.Schema{
 			"image_id": {

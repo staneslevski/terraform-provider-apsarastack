@@ -202,7 +202,7 @@ data "apsarastack_disks" "default" {
 
 var existDisksMapFunc = func(rand int) map[string]string {
 	return map[string]string{
-		"disks.#":                   "1",
+		"disks.#":                   "",
 		"disks.0.id":                CHECKSET,
 		"disks.0.name":              fmt.Sprintf("tf-testAccCheckApsaraStackDisksDataSource_ids-%d", rand),
 		"disks.0.description":       fmt.Sprintf("tf-testAccCheckApsaraStackDisksDataSource_ids-%d_description", rand),
@@ -224,7 +224,7 @@ var existDisksMapFunc = func(rand int) map[string]string {
 
 var fakeDisksMapFunc = func(rand int) map[string]string {
 	return map[string]string{
-		"disks.#": "0",
+		"disks.#": "",
 	}
 }
 

@@ -696,9 +696,12 @@ func (client *ApsaraStackClient) WithOssClient(do func(*oss.Client) (interface{}
 	// Initialize the OSS client if necessary
 	if client.ossconn == nil {
 		schma := "https"
-		endpoint := client.config.OssEndpoint
+		endpoint := "https://" + client.config.OssEndpoint
+		log.Printf("[DEBUG] Endpoint 1 :%s", endpoint)
+
 		if endpoint == "" {
 			endpoint = loadEndpoint(client.config.RegionId, OSSCode)
+			log.Printf("[DEBUG] Endpoint 2 :%s", endpoint)
 		}
 		if endpoint == "" {
 			endpointItem, _ := client.describeEndpointForService(strings.ToLower(string(OSSCode)))
@@ -714,8 +717,12 @@ func (client *ApsaraStackClient) WithOssClient(do func(*oss.Client) (interface{}
 					}
 				}
 				endpoint = endpointItem.Endpoint
+				log.Printf("[DEBUG] Endpoint 3 :%s", endpoint)
+
 			} else {
 				endpoint = fmt.Sprintf("oss-%s.aliyuncs.com", client.RegionId)
+				log.Printf("[DEBUG] Endpoint 4 :%s", endpoint)
+
 			}
 		}
 		if !strings.HasPrefix(endpoint, "http") {
@@ -724,7 +731,11 @@ func (client *ApsaraStackClient) WithOssClient(do func(*oss.Client) (interface{}
 
 		clientOptions := []oss.ClientOption{oss.UserAgent(client.getUserAgent()),
 			oss.SecurityToken(client.config.SecurityToken)}
+		log.Printf("[DEBUG] Client options :%#v", clientOptions)
+
 		proxy, err := client.getHttpProxy()
+		log.Printf("[DEBUG] Proxy :%s", proxy)
+
 		if proxy != nil {
 			skip, err := client.skipProxy(endpoint)
 			if err != nil {
@@ -736,6 +747,7 @@ func (client *ApsaraStackClient) WithOssClient(do func(*oss.Client) (interface{}
 		}
 
 		ossconn, err := oss.New(endpoint, client.config.AccessKey, client.config.SecretKey, clientOptions...)
+		log.Printf("[DEBUG] OSSconn :%#v", ossconn)
 		if err != nil {
 			return nil, fmt.Errorf("unable to initialize the OSS client: %#v", err)
 		}

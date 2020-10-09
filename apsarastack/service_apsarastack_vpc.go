@@ -3,6 +3,7 @@ package apsarastack
 import (
 	"log"
 	"regexp"
+	"strconv"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
@@ -453,7 +454,7 @@ func (s *VpcService) WaitForCenInstanceGrant(id string, status Status, timeout i
 				return WrapError(err)
 			}
 		}
-		if object.CenInstanceId == instanceId && string(object.CenOwnerId) == ownerId && status != Deleted {
+		if object.CenInstanceId == instanceId && strconv.FormatInt(object.CenOwnerId, 10) == ownerId && status != Deleted {
 			break
 		}
 		if time.Now().After(deadline) {

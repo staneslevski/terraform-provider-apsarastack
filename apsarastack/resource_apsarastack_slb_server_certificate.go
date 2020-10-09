@@ -90,11 +90,11 @@ func resourceApsaraStackSlbServerCertificateCreate(d *schema.ResourceData, meta 
 func resourceApsaraStackSlbServerCertificateRead(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*connectivity.ApsaraStackClient)
 	slbService := SlbService{client}
-	tags, err := slbService.DescribeTags(d.Id(), nil, TagResourceCertificate)
-	if err != nil {
-		return WrapError(err)
-	}
-	d.Set("tags", slbService.tagsToMap(tags))
+	//tags, err := slbService.DescribeTags(d.Id(), nil, TagResourceCertificate)
+	//if err != nil {
+	//	return WrapError(err)
+	//}
+	//d.Set("tags", slbService.tagsToMap(tags))
 
 	serverCertificate, err := slbService.DescribeSlbServerCertificate(d.Id())
 	if err != nil {
