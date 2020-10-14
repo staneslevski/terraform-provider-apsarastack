@@ -37,11 +37,6 @@ func dataSourceApsaraStackCommonBandwidthPackages() *schema.Resource {
 				Computed: true,
 				Elem:     &schema.Schema{Type: schema.TypeString},
 			},
-			"resource_group_id": {
-				Type:     schema.TypeString,
-				Optional: true,
-				ForceNew: true,
-			},
 
 			// Computed values
 			"packages": {
@@ -98,11 +93,6 @@ func dataSourceApsaraStackCommonBandwidthPackages() *schema.Resource {
 							},
 							MinItems: 0,
 						},
-						"resource_group_id": {
-							Type:     schema.TypeString,
-							Optional: true,
-							ForceNew: true,
-						},
 					},
 				},
 			},
@@ -116,7 +106,6 @@ func dataSourceApsaraStackCommonBandwidthPackagesRead(d *schema.ResourceData, me
 	request.RegionId = string(client.Region)
 	request.PageSize = requests.NewInteger(PageSizeLarge)
 	request.PageNumber = requests.NewInteger(1)
-	request.ResourceGroupId = d.Get("resource_group_id").(string)
 	idsMap := make(map[string]string)
 	if v, ok := d.GetOk("ids"); ok {
 		for _, vv := range v.([]interface{}) {
@@ -195,7 +184,6 @@ func CommonBandwidthPackagesDecriptionAttributes(d *schema.ResourceData, cbwps [
 			"isp":                 cbwp.ISP,
 			"name":                cbwp.Name,
 			"creation_time":       cbwp.CreationTime,
-			"resource_group_id":   cbwp.ResourceGroupId,
 			"public_ip_addresses": vpcService.FlattenPublicIpAddressesMappings(cbwp.PublicIpAddresses.PublicIpAddresse),
 		}
 		names = append(names, cbwp.Name)

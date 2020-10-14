@@ -68,7 +68,6 @@ func TestAccApsaraStackKeyPairAttachmentBasic(t *testing.T) {
 	})
 
 }
-
 const testAccKeyPairAttachmentConfigBasic = `
 data "apsarastack_zones" "default" {
 	available_disk_category = "cloud_ssd"
@@ -111,11 +110,9 @@ resource "apsarastack_instance" "default" {
   security_groups = ["${apsarastack_security_group.default.id}"]
   vswitch_id = "${apsarastack_vswitch.default.id}"
 
-  internet_charge_type = "PayByTraffic"
   internet_max_bandwidth_out = 5
   password = "Yourpassword1234"
 
-  instance_charge_type = "PostPaid"
   system_disk_category = "cloud_ssd"
 }
 
@@ -133,3 +130,4 @@ var testAccCheckKeyPairAttachmentBasicMap = map[string]string{
 	"key_name":       CHECKSET,
 	"instance_ids.#": "2",
 }
+

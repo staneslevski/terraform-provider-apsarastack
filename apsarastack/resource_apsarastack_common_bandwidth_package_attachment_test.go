@@ -205,7 +205,6 @@ func testAccCommonBandwidthPackageAttachmentConfigBasic(rand int) string {
 	resource "apsarastack_eip" "default" {
 		name = "${var.name}"
 		bandwidth            = "2"
-		internet_charge_type = "PayByTraffic"
 	}
 
 	resource "apsarastack_common_bandwidth_package_attachment" "default" {
@@ -236,7 +235,6 @@ func testAccCommonBandwidthPackageAttachmentConfigMulti(rand int) string {
 		count = "${var.number}"
 		name = "${var.name}"
 		bandwidth            = "2"
-		internet_charge_type = "PayByTraffic"
 	}
 
 	resource "apsarastack_common_bandwidth_package_attachment" "default" {

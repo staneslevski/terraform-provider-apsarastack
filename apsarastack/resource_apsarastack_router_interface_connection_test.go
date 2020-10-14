@@ -99,7 +99,7 @@ provider "apsarastack" {
   region = "${var.region}"
 }
 variable "region" {
-  default = "cn-hangzhou"
+  default = "cn-qingdao-env66-d01"
 }
 variable "name" {
   default = "tf-testAccApsaraStackRIConnection_basic%d"

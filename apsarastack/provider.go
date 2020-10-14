@@ -76,7 +76,7 @@ func Provider() terraform.ResourceProvider {
 			"insecure": {
 				Type:        schema.TypeBool,
 				Optional:    true,
-				Default:     false,
+				Default:     true,
 				DefaultFunc: schema.EnvDefaultFunc("APSARASTACK_INSECURE", nil),
 				Description: descriptions["insecure"],
 			},
@@ -305,6 +305,8 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 		config.OssEndpoint = "oss." + domain
 		config.StsEndpoint = "sts." + domain
 		config.RdsEndpoint = "rds." + domain
+		config.EssEndpoint = "ess." + domain
+
 
 	} else {
 
@@ -318,7 +320,7 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 			config.RdsEndpoint = strings.TrimSpace(endpoints["rds"].(string))
 			config.OssEndpoint = strings.TrimSpace(endpoints["oss."].(string))
 			config.StsEndpoint = strings.TrimSpace(endpoints["slb."].(string))
-
+			config.EssEndpoint = strings.TrimSpace(endpoints["ess."].(string))
 		}
 	}
 

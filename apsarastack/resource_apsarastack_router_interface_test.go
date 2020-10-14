@@ -276,12 +276,8 @@ resource "apsarastack_vpc" "default" {
 	cidr_block = "172.16.0.0/12"
 }
 
-data "apsarastack_regions" "default" {
-	current = true
-}
-
 resource "apsarastack_router_interface" "default" {
-	opposite_region = "${data.apsarastack_regions.default.regions.0.id}"
+	opposite_region = "cn-qingdao-env66-d01"
 	router_type = "VRouter"
 	router_id = "${apsarastack_vpc.default.router_id}"
 	role = "AcceptingSide"
@@ -301,13 +297,9 @@ resource "apsarastack_vpc" "default" {
 	cidr_block = "172.16.0.0/12"
 }
 
-data "apsarastack_regions" "default" {
-	current = true
-}
-
 resource "apsarastack_router_interface" "default" {
 	count = 3
-	opposite_region = "${data.apsarastack_regions.default.regions.0.id}"
+	opposite_region = "cn-qingdao-env66-d01"
 	router_type = "VRouter"
 	router_id = "${apsarastack_vpc.default.router_id}"
 	role = "AcceptingSide"
@@ -327,12 +319,8 @@ resource "apsarastack_vpc" "default" {
 	cidr_block = "172.16.0.0/12"
 }
 
-data "apsarastack_regions" "default" {
-	current = true
-}
-
 resource "apsarastack_router_interface" "default" {
-	opposite_region = "${data.apsarastack_regions.default.regions.0.id}"
+	opposite_region = "cn-qingdao-env66-d01"
 	router_type = "VRouter"
 	router_id = "${apsarastack_vpc.default.router_id}"
 	role = "InitiatingSide"
@@ -353,12 +341,8 @@ resource "apsarastack_vpc" "default" {
 	cidr_block = "172.16.0.0/12"
 }
 
-data "apsarastack_regions" "default" {
-	current = true
-}
-
 resource "apsarastack_router_interface" "default" {
-	opposite_region = "${data.apsarastack_regions.default.regions.0.id}"
+	opposite_region = "cn-qingdao-env66-d01"
 	router_type = "VRouter"
 	router_id = "${apsarastack_vpc.default.router_id}"
 	role = "InitiatingSide"
@@ -379,12 +363,9 @@ resource "apsarastack_vpc" "default" {
 	cidr_block = "172.16.0.0/12"
 }
 
-data "apsarastack_regions" "default" {
-	current = true
-}
 
 resource "apsarastack_router_interface" "default" {
-	opposite_region = "${data.apsarastack_regions.default.regions.0.id}"
+	opposite_region = "cn-qingdao-env66-d01"
 	router_type = "VRouter"
 	router_id = "${apsarastack_vpc.default.router_id}"
 	role = "InitiatingSide"
@@ -405,12 +386,8 @@ resource "apsarastack_vpc" "default" {
 	cidr_block = "172.16.0.0/12"
 }
 
-data "apsarastack_regions" "default" {
-	current = true
-}
-
 resource "apsarastack_router_interface" "default" {
-	opposite_region = "${data.apsarastack_regions.default.regions.0.id}"
+	opposite_region = "cn-qingdao-env66-d01"
 	router_type = "VRouter"
 	router_id = "${apsarastack_vpc.default.router_id}"
 	role = "InitiatingSide"
@@ -432,12 +409,8 @@ resource "apsarastack_vpc" "default" {
 	cidr_block = "172.16.0.0/12"
 }
 
-data "apsarastack_regions" "default" {
-	current = true
-}
-
 resource "apsarastack_router_interface" "default" {
-	opposite_region = "${data.apsarastack_regions.default.regions.0.id}"
+	opposite_region ="cn-qingdao-env66-d01"
 	router_type = "VRouter"
 	router_id = "${apsarastack_vpc.default.router_id}"
 	role = "InitiatingSide"

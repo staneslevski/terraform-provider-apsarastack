@@ -40,16 +40,6 @@ func TestAccApsaraStackSnapshotsDataSourceBasic(t *testing.T) {
 		}),
 	}
 
-	encryptedConfig := dataSourceTestAccConfig{
-		existConfig: testAccConfig(map[string]interface{}{
-			"ids":       []string{"${apsarastack_snapshot.default.id}"},
-			"encrypted": "false",
-		}),
-		fakeConfig: testAccConfig(map[string]interface{}{
-			"ids":       []string{"${apsarastack_snapshot.default.id}"},
-			"encrypted": "true",
-		}),
-	}
 
 	nameRegexConfig := dataSourceTestAccConfig{
 		existConfig: testAccConfig(map[string]interface{}{
@@ -182,7 +172,7 @@ func TestAccApsaraStackSnapshotsDataSourceBasic(t *testing.T) {
 		fakeMapFunc:  fakeSnapshotsMapFunc,
 	}
 
-	snapshotsCheckInfo.dataSourceTestCheck(t, rand, idsConfig, instanceIdConfig, diskIdConfig, encryptedConfig, nameRegexConfig,
+	snapshotsCheckInfo.dataSourceTestCheck(t, rand, idsConfig, instanceIdConfig, diskIdConfig,  nameRegexConfig,
 		statusConfig, typeConfig, sourceDiskTypeConfig, usageConfig, tagsConfig, allConfig)
 }
 

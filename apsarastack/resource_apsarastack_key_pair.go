@@ -30,17 +30,8 @@ func resourceApsaraStackKeyPair() *schema.Resource {
 			"key_name": {
 				Type:     schema.TypeString,
 				Required: true,
-				//	Optional:      true,
-				//	Computed:      true,
 				ForceNew:     true,
 				ValidateFunc: validation.StringLenBetween(2, 128),
-				//ConflictsWith: []string{"key_name_prefix"},
-			},
-			"key_name_prefix": {
-				Type:         schema.TypeString,
-				Optional:     true,
-				ForceNew:     true,
-				ValidateFunc: validation.StringLenBetween(0, 100),
 			},
 			"public_key": {
 				Type:     schema.TypeString,
@@ -75,12 +66,9 @@ func resourceApsaraStackKeyPairCreate(d *schema.ResourceData, meta interface{}) 
 	var keyName string
 	if v, ok := d.GetOk("key_name"); ok {
 		keyName = v.(string)
-	} else if v, ok := d.GetOk("key_name_prefix"); ok {
-		keyName = resource.PrefixedUniqueId(v.(string))
-	} else {
+	}else {
 		keyName = resource.UniqueId()
 	}
-
 	if publicKey, ok := d.GetOk("public_key"); ok {
 		request := ecs.CreateImportKeyPairRequest()
 		request.RegionId = client.RegionId

@@ -124,7 +124,7 @@ func TestAccApsaraStackEssScheduledTask_basic(t *testing.T) {
 					testAccCheck(map[string]string{
 						"scheduled_action":       CHECKSET,
 						"launch_time":            CHECKSET,
-						"scheduled_task_name":    fmt.Sprintf("tf-testAccEssScheduleConfig-%d", rand),
+						"scheduled_task_name":    fmt.Sprintf("tf-test%d", rand),
 						"launch_expiration_time": "600",
 						"task_enabled":           "true",
 					}),
@@ -141,7 +141,7 @@ func TestAccApsaraStackEssScheduledTask_basic(t *testing.T) {
 
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheck(map[string]string{
-						"scheduled_task_name": fmt.Sprintf("tf-testAccEssSchedule-%d", rand),
+						"scheduled_task_name": fmt.Sprintf("tf-test%d", rand),
 					}),
 				),
 			},
@@ -193,7 +193,7 @@ func TestAccApsaraStackEssScheduledTask_basic(t *testing.T) {
 
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheck(map[string]string{
-						"scheduled_task_name":    fmt.Sprintf("tf-testAccEssScheduleConfig-%d", rand),
+						"scheduled_task_name":    fmt.Sprintf("tf-test%d", rand),
 						"launch_expiration_time": "600",
 						"task_enabled":           "true",
 					}),
@@ -269,7 +269,7 @@ func testAccEssScheduleConfig(common, scheduleTime string, rand int) string {
 	return fmt.Sprintf(`
 	%s
 	variable "name" {
-		default = "tf-testAccEssScheduleConfig-%d"
+		default = "tf-test%d"
 	}
 	
 	resource "apsarastack_ess_scaling_group" "default" {
@@ -307,7 +307,7 @@ func testAccEssScheduleUpdateScheduledTaskName(common, scheduleTime string, rand
 	return fmt.Sprintf(`
 	%s
 	variable "name" {
-		default = "tf-testAccEssSchedule-%d"
+		default = "tf-test%d"
 	}
 	
 	resource "apsarastack_ess_scaling_group" "default" {
@@ -345,7 +345,7 @@ func testAccEssScheduleUpdateDescription(common, scheduleTime string, rand int) 
 	return fmt.Sprintf(`
 	%s
 	variable "name" {
-		default = "tf-testAccEssSchedule-%d"
+		default = "tf-test%d"
 	}
 	
 	resource "apsarastack_ess_scaling_group" "default" {
@@ -384,7 +384,7 @@ func testAccEssScheduleUpdateLaunchExpirationTime(common, scheduleTime string, r
 	return fmt.Sprintf(`
 	%s
 	variable "name" {
-		default = "tf-testAccEssSchedule-%d"
+		default = "tf-test%d"
 	}
 	
 	resource "apsarastack_ess_scaling_group" "default" {
@@ -423,7 +423,7 @@ func testAccEssScheduleUpdateRecurrenceType(common, scheduleTime string, rand in
 	return fmt.Sprintf(`
 	%s
 	variable "name" {
-		default = "tf-testAccEssSchedule-%d"
+		default = "tf-test%d"
 	}
 	
 	resource "apsarastack_ess_scaling_group" "default" {
@@ -466,7 +466,7 @@ func testAccEssScheduleUpdateTaskEnabled(common, scheduleTime string, rand int) 
 	return fmt.Sprintf(`
 	%s
 	variable "name" {
-		default = "tf-testAccEssSchedule-%d"
+		default = "tf-test%d"
 	}
 	
 	resource "apsarastack_ess_scaling_group" "default" {
@@ -509,7 +509,7 @@ func testAccEssScheduleConfigMulti(common, scheduleTime string, rand int) string
 	return fmt.Sprintf(`
 	%s
 	variable "name" {
-		default = "tf-testAccEssScheduleConfig-%d"
+		default = "tf-test%d"
 	}
 	
 	resource "apsarastack_ess_scaling_group" "default" {

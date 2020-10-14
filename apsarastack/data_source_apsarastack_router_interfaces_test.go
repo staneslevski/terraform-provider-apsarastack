@@ -143,11 +143,8 @@ resource "apsarastack_vpc" "default" {
   cidr_block = "${element(var.cidr_block_list,count.index)}"
 }
 
-data "apsarastack_regions" "current_regions" {
-  current = true
-}
 resource "apsarastack_router_interface" "initiating" {
-  opposite_region = "${data.apsarastack_regions.current_regions.regions.0.id}"
+  opposite_region = "cn-qingdao-env66-d01"
   router_type = "VRouter"
   router_id = "${apsarastack_vpc.default.0.router_id}"
   role = "InitiatingSide"
@@ -157,7 +154,7 @@ resource "apsarastack_router_interface" "initiating" {
   depends_on = [ "apsarastack_vpc.default" ]
 }
 resource "apsarastack_router_interface" "accepting" {
-  opposite_region = "${data.apsarastack_regions.current_regions.regions.0.id}"
+  opposite_region = "cn-qingdao-env66-d01"
   router_type = "VRouter"
   router_id = "${apsarastack_vpc.default.1.router_id}"
   role = "AcceptingSide"

@@ -232,7 +232,7 @@ data "apsarastack_instance_types" "c4g8" {
 
 const testAccCheckApsaraStackInstanceTypesDataSourceGpu = `
 provider "apsarastack" {
-	region = "cn-hangzhou"
+	region = "cn-qingdao-env66-d01"
 }
 data "apsarastack_instance_types" "gpu" {
 	sorted_by = "Price"
